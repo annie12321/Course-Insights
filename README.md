@@ -7,22 +7,22 @@ Course registration is one of the most important series of decisions in a colleg
 
 # Features
 
-# Verified logins and sessions
+## Verified logins and sessions
 This application should cater to users with Wellesley email addresses, specifically students. Faculty and other non-students with Wellesley email addresses should not be able to use the application, so that students can be honest and have privacy within their course reviews. In order to authenticate users, our application will have verified logins using passwords that are stored in the database using a hashing algorithm. Additionally, for security, there will be sessions, ending after users log out. For moderation purposes, administrators such as Annie and Emily will have different permissions than normal users in that we can remove other users' course reviews, syllabi uploads, etc, while normal users will only be able to edit their own course reviews.
 
-# Upload course review
+## Upload course review
 Students will be able to upload a course review for any course, existent or not in the database. If the course already exists, the review will be associated with that existing course using database keys. If the course does not exist, our application will create a new course record and then attach the review. To streamline initial development, Annie and Emily will pre-populate the database with all currently offered courses, either through web scraping or manual insertion. This way, the system does not have to rely on admin to continuously update the courses in the system. Then, when new courses are created, other users will be able to review the new courses as well. Additionally, users will be able to update and delete their old reviews. Since courses and professors grow and change over time, allowing users to update reviews ensures that the web page reflects the most current perspectives.
 
-# Syllabus upload
+## Syllabus upload
 In the past, students have often asked other students for course syllabi to assess a course’s workload and before determining whether to take it. Therefore, one of the distinguishing features of Course Insights is that unlike many other course review applications, users will be able to upload syllabi as part of the course reviews. Behind the scenes, syllabus files will be uploaded using Multer. The application will check the content and size of the file to make sure it doesn't contain overwhelming or irrelevant data. It will also make sure the file doesn’t contain anything executable. The most recent syllabus uploaded will be displayed for each course and professor as course syllabi are updated quite frequently.
 
-# Displays a summary review of each course
+## Displays a summary review of each course
 When viewing a course on Course Insights, students will see a summary dashboard for that specific course. The summary dashboard consolidates the data from each and every review from students, and aggregates it into a summary statistic. We will have summary metrics such as average hours per week, average grade in the class, average difficulty, and most popular tags. This allows students to easily parse through potentially way too many reviews in one easy look, reducing their cognitive load and improving their decision making.
 
-# Search
+## Search
 The homepage of the website should be similar to that of Rate My Professor’s—a search bar with filters. To make the course reviews more easily viewable, users should be able to filter by major, department, distribution requirement, and tags such as “Easy A,” “Heavy Workload,” etc. To display the filter, we would use an HTML form with a dropdown question. Then, we would take the user input to group, filter, and display the documents using the MongoDB aggregation pipeline.
 
-# Data to be collected
+## Data to be collected
 In order to make such a web application, we’ll create one database with three main collections: Users, Courses, and Reviews. Here are the main components per collection.
 
 Users: user_id, email, password, role (student or alum), and class year. 
