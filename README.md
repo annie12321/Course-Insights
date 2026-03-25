@@ -1,5 +1,3 @@
-# Course-Insights
-
 # Course Insights: your guide to course registration.
 
 # Intro
