@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-
-    <%- include('partials/navbar') %>
 
     <main class="auth-container">
         <h1>Create an Account</h1>
@@ -37,8 +34,9 @@
             <button type="submit" class="btn">Create Account</button>
         </form>
         
-        <p>Already have an account? <a href="/login">Log in here</a>.</p>
+        <p>Already have an account? <a href="/login.ejs">Log in here</a>.</p>
     </main>
-
+    <!-- load local js -->
+    <script src="/main.js"></script>
 </body>
 </html>
