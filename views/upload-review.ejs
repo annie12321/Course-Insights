@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+    <%- include('partials/navbar') %>
+
+    <div class="login-container">
+        <h1>Upload Review</h1>
+        
+        <form action="/upload" method="POST">
+            <div class="form-group">
+                <label for="course">Course</label>
+                <select name="transport" id="transport">
+                <option value="">Choose a course</option>
+                </select>
+            </div>
+
+            <!-- additional stuff -->
+
+            <div class="form-group">
+                <label for="comments">Comments</label>
+                <input type="text" id="comments" name="comments" placeholder="Review" required>
+            </div>
+
+            <div class="form-group">
+                <label for="comments">Comments</label>
+                <input type="text" id="comments" name="comments" placeholder="Review" required>
+            </div>
+
+            <button type="submit" class="btn">Review</button>
+        </form>
+        
+        <p>Don't have an account? <a href="/register">Register here</a>.</p>
+    </div>
+
+</body>
+</html>
