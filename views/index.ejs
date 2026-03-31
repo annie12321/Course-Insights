@@ -1,1 +1,47 @@
-<!-- hello -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Course Insights</title>
+    <!-- loading Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- load local stylesheet (css) -->
+    <link rel="stylesheet" href="/styles.css" />
+    <!-- loading jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <%- include("partials/navbar.ejs") %>
+
+    <form class = "search" method="GET" action="/search/">
+    <p><label>Search: <input type="text" required name="term"></label>
+        <label>Tags: 
+            <select name="tag" multiple size="1">
+                <option value="easyA">Easy A</option>
+                <option value="discussion">Discussion-based</option>
+                <option value="flipped">Flipped classroom</option>
+                <option value="300">300-level</option>
+                <option value="reading">Reading heavy</option>
+                <option value="tests">No tests</option>
+            </select>
+        </label>
+    <input type="submit" value="search"></p>
+    
+    <div id="search-results">
+        <% } if (results.length != 0) { %>
+            <ul>
+                <% results.forEach((result) => { %>
+                    <li><a href = "/course/<%= result.course_num %>"><%= result.course_num %></a></li>
+                <% }) %>
+            </ul>
+        <% } %>
+    </div>
+</form>
+    <!-- load Bootstrap js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- load local js -->
+    <script src="/main.js"></script>
+</body>
+</html>

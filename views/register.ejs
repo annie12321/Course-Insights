@@ -4,13 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 
-    <%- include('partials/navbar') %>
-
-    <main class="register-container">
+    <main class="auth-container">
         <h1>Create an Account</h1>
 
         <form action="/register" method="POST" class="register-form">
@@ -39,6 +36,7 @@
         
         <p>Already have an account? <a href="/login">Log in here</a>.</p>
     </main>
-
+    <!-- load local js -->
+    <script src="/main.js"></script>
 </body>
 </html>
