@@ -29,3 +29,47 @@ app.set('view engine', 'ejs');
 
 const mongoUri = cs304.getMongoUri();
 const myDBName = "annemily";
+
+// login page
+app.get("/login", (req, res) => {
+    return res.render("login.ejs");
+});
+
+// register account page
+app.get("/register", (req, res) => {
+    return res.render("register.ejs");
+});
+
+//example user (delete later)
+const user = {
+    username: "annemily",
+    role: "student",
+    email: "123@wellesley.edu",
+    classYear: "2024",
+    reviews: ["hello world", "this is a review"],
+};
+
+
+// profile page
+app.get("/profile", (req, res) => {
+    return res.render("profile.ejs", {user: user, currentPage: "profile"});
+});
+
+// home page with search bar
+app.get("/", (req, res) => {
+    return res.render("index.ejs", {results: [], currentPage: "home"});
+});
+
+// ================================================================
+// postlude
+
+const serverPort = cs304.getPort(8080);
+
+// this is last, because it never returns
+app.listen(serverPort, function() {
+    console.log(`listening on ${serverPort}`);
+    console.log(`visit http://cs.wellesley.edu:${serverPort}/`);
+    console.log(`or http://localhost:${serverPort}/`);
+    console.log('^C to exit');
+});
+
