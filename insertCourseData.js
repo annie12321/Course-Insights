@@ -10,7 +10,8 @@ const mongoUri = cs304.getMongoUri();
 
 const myDBName = "annemily";
 
-import courseData from './spring26courses.json' with { type: 'json' };
+const courseData = require('./spring26courses.json');
+console.log(courseData);
 
 // insert course
 async function insertCourse(db, course) {
