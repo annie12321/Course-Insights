@@ -2,9 +2,11 @@
 "use strict";
 
 const path = require('path');
+
 require("dotenv").config({ path: path.join(process.env.HOME, '.cs304env')});
 const { Connection } = require('./connection');
 const cs304 = require('./cs304');
+const bcrypt = require('bcrypt');
 
 const mongoUri = cs304.getMongoUri();
 
@@ -13,6 +15,8 @@ const myDBName = "annemily";
 const courseData = require('./spring26courses.json');
 const courseDataLen = courseData.length;
 console.log(courseData);
+
+const ROUNDS = 15;
 
 // insert course
 async function insertCourse(db, course) {
@@ -35,11 +39,18 @@ async function insertCourse(db, course) {
 
 
 async function addUsers(db) {
+  let passwd1 = '1234';
+  let passwd2 = 'pretenditshashed';
+  let passwd3 = 'icecream789';
+  let hash1 = await bcrypt.hash(passwd1, ROUNDS);
+  let hash2 = await bcrypt.hash(passwd2, ROUNDS);
+  let hash3 = await bcrypt.hash(passwd3, ROUNDS);
+
   await db.collection('users').insertOne({
     user_id: "ac134",
     email: "ac134@wellesley.edu",
     username: "annie",
-    hash: "pretenditshashed1",
+    hash: hash1,
     role: "admin",
     class_year: "2026"
   });
@@ -48,7 +59,7 @@ async function addUsers(db) {
     user_id: "ez107",
     email: "ez107@wellesley.edu",
     username: "foodlover",
-    hash: "pretenditshashed2",
+    hash: hash2,
     role: "admin",
     class_year: "2028"
   });
@@ -57,7 +68,7 @@ async function addUsers(db) {
     user_id: "gh104",
     email: "gh104@wellesley.edu",
     username: "genesis",
-    hash: "pretenditshashed3",
+    hash: hash3,
     role: "student",
     class_year: "2026"
   });

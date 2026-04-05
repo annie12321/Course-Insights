@@ -2,15 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Course Insights: Register</title>
-    <!-- loading Bootstrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <!-- load local stylesheet (css) -->
+    <title>Course Insights: Register</title><!-- load local stylesheet (css) -->
     <link rel="stylesheet" href="/styles.css" />
     </head>
 <body>
-    <%- include("partials/navbar.ejs") %>
-
+    <%- include("partials/flash.ejs") %>
+    
     <main class="auth-container">
         <h1>Create an Account</h1>
 
@@ -27,7 +24,7 @@
 
             <div class="form-group">
                 <label for="class-year">Class Year</label>
-                <select name="class-year" multiple size="1">
+                <select name="year" multiple size="1" required>
                     <option value="2026">2026</option>
                     <option value="2027">2027</option>
                     <option value="2028">2028</option>
@@ -48,13 +45,8 @@
             <button type="submit" class="btn">Create Account</button>
         </form>
         
-        <p>Already have an account? <a href="/login">Log in here</a>.</p>
-    </main>
-    <!-- load Bootstrap js -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <!-- load local js -->
+        <p>Already have an account? <a href="/login-page">Log in here</a>.</p>
+    </main> <!-- load local js -->
     <script src="/main.js"></script>
 </body>
 </html>
