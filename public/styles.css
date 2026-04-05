@@ -4,3 +4,12 @@
     background-color: #f5e1ef;
     color: black;
 }
+
+#errors {
+    font-size: large;
+    color: red;
+}
+
+#info {
+    color: green;
+}
