@@ -53,14 +53,16 @@ const ROUNDS = 15;
 
 // ================================================================
 
-// handles logging in
+// handles logging in and any related issues
 app.post("/login", async (req, res) => {
     try {
         const username = req.body.username;
         const password = req.body.password;
         const db = await Connection.open(mongoUri, myDBName);
+        // check if username exists
         var existingUser = await db.collection(USERS).findOne({username: username});
         console.log('user', existingUser);
+        // handles situations where login won't work
         if (!existingUser) {
             req.flash('error', "Username does not exist - try again.");
             return res.redirect('/login-page')
@@ -72,6 +74,7 @@ app.post("/login", async (req, res) => {
             return res.redirect('/login-page')
         }
         req.flash('info', 'successfully logged in as ' + username);
+        // updating cookies if successful login
         req.session.user = existingUser;
         req.session.loggedIn = true;
         console.log('login as', username);
@@ -82,13 +85,14 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// handles registering the account
+// handles registering the account and related issues
 app.post("/register", async (req, res) => {
     try {
         const username = req.body.username;
         const password = req.body.password;
         const db = await Connection.open(mongoUri, myDBName);
         var existingUser = await db.collection(USERS).findOne({username: username});
+        // handles situations where registration won't work
         if (existingUser) {
             req.flash('error', "Username already exists - please try logging in instead.");
             return res.redirect('/login-page')
@@ -98,6 +102,7 @@ app.post("/register", async (req, res) => {
             return res.redirect('/register-page')
         }
         const hash = await bcrypt.hash(password, ROUNDS);
+        // create new user object and insert into database
         let newUser = {
             user_id: getUserID(req.body.addr),
             email: req.body.addr,
@@ -109,6 +114,7 @@ app.post("/register", async (req, res) => {
         await db.collection(USERS).insertOne(newUser);
         console.log('successfully joined', username, password, hash);
         req.flash('info', 'successfully joined and logged in as ' + username);
+        // updating cookies if successful registration
         req.session.user = newUser;
         req.session.loggedIn = true;
         return res.redirect('/');
@@ -121,6 +127,7 @@ app.post("/register", async (req, res) => {
 // handles logout by clearing cookies
 app.post('/logout', (req,res) => {
     if (req.session.username) {
+        // clear cookies
         req.session.user = null;
         req.session.loggedIn = false;
         req.flash('info', 'You are logged out');
@@ -175,6 +182,7 @@ function requiresLogin(req, res, next) {
  */
 function getUserID(email) {
     let position = email.indexOf("@");
+    // part before the @ is the user ID
     return email.substring(0, position);
 }
 
@@ -186,6 +194,7 @@ function getUserID(email) {
 function checkWellesleyEmail(email) {
     let position = email.indexOf("@");
     let domain = email.substring(position);
+    // part after the @ should be @wellesley.edu
     return domain === "@wellesley.edu";
 }
 
