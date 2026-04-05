@@ -11,10 +11,29 @@
 <body>
     <%- include("partials/navbar.ejs") %>
 
-    <div class="course-container">
-        <h1>Course</h1>
+    <div id="profile-container">
+        <h1><%= user.username %>'s Profile</h1>
+        <p><b>Role:</b> <%= user.role %></p>
+        <p><b>Email:</b> <%= user.email %></p>
+        <p><b>Class Year:</b> <%= user.classYear %></p>
+        <p><b>Reviews:</b></p>
+        <ul class = "reviews">
+            <% user.reviews.forEach((review) => { %>
+                <li> <%= review %> </li>
+            <% }) %>
+        </ul>
+    </div>
+
+    <div id="course-container">
+        <h1><%= course.course_num %><%= course.department %>: <%= course.title %> Review</h1>
         
-        
+        <p><b>Instructor(s):</b> <%= course.instructors %></p>
+        <p><b>Distribution(s):</b> <%= course.distributions %></p>
+        <p><b>Average hours spent:</b> <%= course.avgHours %></p>
+        <p><b>Average Difficulty:</b> <%= course.avgDifficulty %></p>
+        <p><b>Percent that would retake:</b> <%= course.retake %></p>
+        <p><b>Tags:</b> <%= course.tags %></p>
+        <!-- might need special formatting for the list ones (dists, tags) -->
     </div>
     <!-- load Bootstrap js -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
