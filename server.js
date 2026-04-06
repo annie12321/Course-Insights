@@ -158,6 +158,34 @@ app.get("/register", (req, res) => {
     return res.render("register.ejs");
 });
 
+app.get("/course/:dept/:num", requiresLogin, async (req, res) => {
+    try {
+        const dept = req.params.dept.toUpperCase();
+        const num = req.params.num;
+
+        const db = await Connection.open(mongoUri, myDBName);
+
+        const courseData = await db.collection(COURSES).findOne({
+            department: dept,
+            course_num: num
+        });
+
+        if(!courseData) {
+            req.flash('error', `Course ${dept}${num} not found.`);
+            return res.redirect('/');
+        }
+
+        res.render("course-view.ejs", {
+            course: courseData,
+            user: req.session.user,
+            currentPage: "course"
+        });
+    } catch (error) {
+        req.flash('error', `Loading course page error: ${error}`);
+        return res.redirect('/')
+    }
+})
+
 // Finish documentation
 /**
  * Flashes error message and redirects to login page if user not logged in
