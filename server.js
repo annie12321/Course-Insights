@@ -65,13 +65,13 @@ app.post("/login", async (req, res) => {
         // handles situations where login won't work
         if (!existingUser) {
             req.flash('error', "Username does not exist - try again.");
-            return res.redirect('/login-page')
+            return res.redirect('/login')
         }
         const match = await bcrypt.compare(password, existingUser.hash); 
         console.log('match', match);
         if (!match) {
             req.flash('error', "Username or password incorrect - try again.");
-            return res.redirect('/login-page')
+            return res.redirect('/login')
         }
         req.flash('info', 'successfully logged in as ' + username);
         // updating cookies if successful login
@@ -81,7 +81,7 @@ app.post("/login", async (req, res) => {
         return res.redirect('/');
     } catch (error) {
         req.flash('error', `Form submission error: ${error}`);
-        return res.redirect('/login-page')
+        return res.redirect('/login')
   }
 });
 
@@ -95,11 +95,11 @@ app.post("/register", async (req, res) => {
         // handles situations where registration won't work
         if (existingUser) {
             req.flash('error', "Username already exists - please try logging in instead.");
-            return res.redirect('/login-page')
+            return res.redirect('/login')
         }
         if (!checkWellesleyEmail(req.body.addr)) {
             req.flash('error', "Please use a Wellesley College email address.");
-            return res.redirect('/register-page')
+            return res.redirect('/register')
         }
         const hash = await bcrypt.hash(password, ROUNDS);
         // create new user object and insert into database
@@ -120,7 +120,7 @@ app.post("/register", async (req, res) => {
         return res.redirect('/');
     } catch (error) {
         req.flash('error', `Form submission error: ${error}`);
-        return res.redirect('/register-page')
+        return res.redirect('/register')
     }
 });
 
@@ -131,10 +131,10 @@ app.post('/logout', (req,res) => {
         req.session.user = null;
         req.session.loggedIn = false;
         req.flash('info', 'You are logged out');
-        return res.redirect('/login-page');
+        return res.redirect('/login');
     } else {
         req.flash('error', 'You are not logged in - please do so.');
-        return res.redirect('/login-page');
+        return res.redirect('/login');
     }
 });
 
@@ -149,12 +149,12 @@ app.get("/", requiresLogin, (req, res) => {
 });
 
 // login page
-app.get("/login-page", (req, res) => {
+app.get("/login", (req, res) => {
     return res.render("login.ejs");
 });
 
 // register page
-app.get("/register-page", (req, res) => {
+app.get("/register", (req, res) => {
     return res.render("register.ejs");
 });
 
@@ -169,7 +169,7 @@ app.get("/register-page", (req, res) => {
 function requiresLogin(req, res, next) {
     if (!req.session.loggedIn) {
         req.flash('error', 'This page requires you to be logged in - please do so.');
-        return res.redirect("/login-page");
+        return res.redirect("/login");
     } else {
         next();
   } 
