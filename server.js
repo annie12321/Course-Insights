@@ -176,7 +176,7 @@ app.get("/course/:dept/:num", requiresLogin, async (req, res) => {
             return res.redirect('/');
         }
 
-        res.render("course-view.ejs", {
+        res.render("course.ejs", {
             course: courseData,
             user: req.session.user,
             currentPage: "course"
