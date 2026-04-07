@@ -32,7 +32,7 @@ async function insertCourse(db, course) {
     course_num: num,
     department: dept,
     title: longTitle,
-    instructors: allInstructors
+    instructors: allInstructors,
   });
   return result;
 }
@@ -52,7 +52,8 @@ async function addUsers(db) {
     username: "annie",
     hash: hash1,
     role: "admin",
-    class_year: "2026"
+    class_year: "2026",
+    reviews: null
   });
 
   await db.collection('users').insertOne({
@@ -61,7 +62,8 @@ async function addUsers(db) {
     username: "foodlover",
     hash: hash2,
     role: "admin",
-    class_year: "2028"
+    class_year: "2028",
+    reviews: null
   });
 
   await db.collection('users').insertOne({
@@ -70,7 +72,8 @@ async function addUsers(db) {
     username: "genesis",
     hash: hash3,
     role: "student",
-    class_year: "2026"
+    class_year: "2026",
+    reviews: null
   });
 
   return;

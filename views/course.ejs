@@ -11,19 +11,6 @@
 <body>
     <%- include("partials/navbar.ejs") %>
 
-    <div id="profile-container">
-        <h1><%= user.username %>'s Profile</h1>
-        <p><b>Role:</b> <%= user.role %></p>
-        <p><b>Email:</b> <%= user.email %></p>
-        <p><b>Class Year:</b> <%= user.classYear %></p>
-        <p><b>Reviews:</b></p>
-        <ul class = "reviews">
-            <% user.reviews.forEach((review) => { %>
-                <li> <%= review %> </li>
-            <% }) %>
-        </ul>
-    </div>
-
     <div id="course-container">
         <h1><%= course.department %><%= course.course_num %>: <%= course.title %> Review</h1>
         
