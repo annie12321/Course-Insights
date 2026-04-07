@@ -19,14 +19,21 @@
                 <label for="course">Course</label>
                 <select name="transport" id="transport">
                 <option value="">Choose a course</option>
-                </select> 
-                <!-- TODO: have the options come from database -->
+                <select name="course" id="course" class="form-control" required>
+                    <option value="">Choose a course...</option>
+                    <% courses.forEach(function(c) { %>
+                        <option value="<%= c.department %>-<%= c.course_num %>">
+                            <%= c.department %> <%= c.course_num %>: <%= c.title %>
+                        </option>
+                    <% }) %>
+                </select>
             </div>
 
             <div class="form-group">
                 <label for="hours">Average hours per Week</label>
                 <input type="range" id="hours-per-week" name="hours-per-week" min="0" max="30" value="10" step="1">
             </div> 
+            <!-- TODO: make hours-per-week into hoursPerWeek everywhere -->
 
             <div class="form-group">
                 <label for="difficulty">Difficulty: 1 - Easy, 5 - Hard</label>

@@ -1,8 +1,6 @@
 // Annie Chen and Emily Zhu
 "use strict";
 
-"use strict";
-
 var g;
 
 function nextIfOk(resp) {

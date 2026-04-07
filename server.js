@@ -158,6 +158,7 @@ app.get("/register", (req, res) => {
     return res.render("register.ejs");
 });
 
+// course page
 app.get("/course/:dept/:num", requiresLogin, async (req, res) => {
     try {
         const dept = req.params.dept.toUpperCase();
@@ -183,6 +184,50 @@ app.get("/course/:dept/:num", requiresLogin, async (req, res) => {
     } catch (error) {
         req.flash('error', `Loading course page error: ${error}`);
         return res.redirect('/')
+    }
+})
+
+// upload course
+app.get("/upload", requiresLogin, async(req, res) => {
+    try {
+        const db = await Connection.open(mongoUri, myDBName);
+
+        const allCourses = await db.collection(COURSES).find().sort({ department: 1, course_num: 1 }).toArray();
+        res.render("upload.ejs", {
+            courses: allCourses,
+            user: req.session.user,
+            currentPage: "upload"
+        });
+    } catch (error) {
+        req.flash('error', `Loading courses from database error: ${error}`);
+        return res.redirect('/')
+    }
+})
+
+app.post("/upload", requiresLogin, async (req, res) => {
+    try {
+        const db = await Connection.open(mongoUri, myDBName);
+        const [dept, num] = req.body.split("-");
+
+        const newReview = {
+            username: req.session.user.username,
+            course_num: num,
+            department: dept,
+            hours: Number(req.body["hours-per-week"]),
+            difficulty: Number(req.body.difficulty),
+            retake: req.body["yes-no"] === "yes",
+            tags: Array.isArray(req.body.tag) ? req.body.tag : [req.body.tag],
+            comments: req.body.comments,
+            submittedAt: new Date()
+        };
+
+        await db.collection(REVIEWS).insertOne(newReview);
+
+        req.flash('info', "Thanks for the reivew!");
+        res.redirect(`/course/${dept}/${num}`);
+    } catch (error) {
+        req.flash('error', `Upload course error: ${error}`);
+        return res.redirect('/upload')
     }
 })
 
