@@ -17,7 +17,7 @@
         <p><b>Email:</b> <%= user.email %></p>
         <p><b>Class Year:</b> <%= user.class_year %></p>
         <p><b>Reviews:</b></p>
-        <% if (Object.hasOwn(user, "reviews")) { %>
+        <% if (user.reviews && user.reviews.length > 0) { %>
             <ul class = "reviews">
                 <% user.reviews.forEach((review) => { %>
                     <li> <%= review %> </li>
