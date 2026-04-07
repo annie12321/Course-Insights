@@ -255,6 +255,9 @@ function requiresLogin(req, res, next) {
  */
 function getUserID(email) {
     let position = email.indexOf("@");
+    if (position === -1) {
+        return email;
+    }
     // part before the @ is the user ID
     return email.substring(0, position);
 }
@@ -267,6 +270,9 @@ function getUserID(email) {
 function checkWellesleyEmail(email) {
     let position = email.indexOf("@");
     let domain = email.substring(position);
+    if (position === -1) {
+        return false;
+    }
     // part after the @ should be @wellesley.edu
     return domain === "@wellesley.edu";
 }
