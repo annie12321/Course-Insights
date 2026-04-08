@@ -101,6 +101,10 @@ app.post("/register", async (req, res) => {
             req.flash('error', "Please use a Wellesley College email address.");
             return res.redirect('/register')
         }
+        if (password != req.body.confirmPassword) {
+            req.flash('error', "Passwords do not match - try again.");
+            return res.redirect('/register')
+        }
         const hash = await bcrypt.hash(password, ROUNDS);
         // create new user object and insert into database
         let newUser = {
@@ -112,7 +116,7 @@ app.post("/register", async (req, res) => {
             class_year: req.body.year
         };
         await db.collection(USERS).insertOne(newUser);
-        console.log('successfully joined', username, password, hash);
+        console.log('successfully joined', username);
         req.flash('info', 'successfully joined and logged in as ' + username);
         // updating cookies if successful registration
         req.session.user = newUser;
