@@ -53,7 +53,14 @@ const ROUNDS = 15;
 
 // ================================================================
 
-// handles logging in and any related issues
+/**
+ * Processes login form (using POST) with username and password fields
+ * Handles any issues with loggin in
+ * If successful, updates cookies and redirects to home page
+ * If not, flashes error message and redirects to login page
+ * @param {Request} req the request object
+ * @param {Response} res the response object
+ */
 app.post("/login", async (req, res) => {
     try {
         const username = req.body.username;
@@ -85,7 +92,15 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// handles registering the account and related issues
+/**
+ * Processes registration form (using POST) with username, password, 
+ * confirm password, email address, and class year fields.
+ * Handles any issues with registering
+ * If successful, updates cookies and redirects to home page
+ * If not, flashes error message and redirects to register or login page
+ * @param {Request} req the request object
+ * @param {Response} res the response object
+ */
 app.post("/register", async (req, res) => {
     try {
         const username = req.body.username;
@@ -128,7 +143,12 @@ app.post("/register", async (req, res) => {
     }
 });
 
-// handles logout by clearing cookies
+/**
+ * Processes logout form (using POST)
+ * If user is logged in, clears cookies and redirects to login page with success message
+ * @param {Request} req the request object
+ * @param {Response} res the response object
+ */
 app.post('/logout', (req,res) => {
     if (req.session.username) {
         // clear cookies
@@ -142,22 +162,22 @@ app.post('/logout', (req,res) => {
     }
 });
 
-// profile page
+// renders profile page
 app.get("/profile", requiresLogin,(req, res) => {
     return res.render("profile.ejs", {user: req.session.user, currentPage: "profile"});
 });
 
-// home page with search bar
+// renders home page with search bar
 app.get("/", requiresLogin, (req, res) => {
     return res.render("index.ejs", {results: [], currentPage: "home"});
 });
 
-// login page
+// renders login page
 app.get("/login", (req, res) => {
     return res.render("login.ejs");
 });
 
-// register page
+// renders register page
 app.get("/register", (req, res) => {
     return res.render("register.ejs");
 });
