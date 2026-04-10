@@ -235,13 +235,11 @@ app.post("/upload", requiresLogin, async (req, res) => {
     }
 })
 
-// Finish documentation
 /**
  * Flashes error message and redirects to login page if user not logged in
- * @param {*} req the request object
- * @param {*} res the response object
- * @param {*} next the next function to call if user is logged in
- * @returns 
+ * @param {Request} req the request object
+ * @param {Response} res the response object
+ * @param {Function} next the next function to call if user is logged in
  */
 function requiresLogin(req, res, next) {
     if (!req.session.loggedIn) {
