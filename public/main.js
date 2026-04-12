@@ -32,6 +32,28 @@ function loginAjax() {
         .catch((error) => { console.error(error); });
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+    const hoursSlider = document.getElementById("hours-per-week");
+    const hoursValue = document.getElementById("hoursValue");
+
+    const difficultySlider = document.getElementById("difficulty");
+    const difficultyValue = document.getElementById("difficultyValue");
+
+    if (hoursSlider) {
+        hoursValue.textContent = hoursSlider.value;
+        hoursSlider.oninput = () => {
+            hoursValue.textContent = hoursSlider.value;
+        };
+    }
+
+    if (difficultySlider) {
+        difficultyValue.textContent = difficultySlider.value;
+        difficultySlider.oninput = () => {
+            difficultyValue.textContent = difficultySlider.value;
+        };
+    }
+});
+
 $("#login-ajax").click(loginAjax);
 
 console.log('main.js loaded');
