@@ -277,6 +277,21 @@ app.post("/upload", requiresLogin, async (req, res) => {
 });
 
 /**
+ * Processes form (GET) and searches database for courses matching the search term
+ * @param {Request} req the request object
+ * @param {Response} res the response object
+ */
+app.get("/search/", requiresLogin, async (req, res) => {
+    let term = req.query.term;
+    let tag = req.query.tag;
+    const db = await Connection.open(mongoUri, myDBName);
+    var regex = new RegExp(term, "i");
+    let courses = db.collection(COURSES);
+    let results = await courses.find({ $or: [{title: regex}, {course_num: regex}, {department: regex}]}).toArray();
+    return res.render("index.ejs", {results: results, currentPage: "home"});
+});
+
+/**
  * Flashes error message and redirects to login page if user not logged in
  * @param {Request} req the request object
  * @param {Response} res the response object
