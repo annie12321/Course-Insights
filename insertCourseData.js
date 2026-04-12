@@ -28,14 +28,19 @@ async function insertCourse(db, course) {
   const longTitle = course["Section Long Title"];
   const allInstructors = course["All Instructors"];
 
-  const result = await db.collection('courses').insertOne({
-    course_num: num,
-    department: dept,
-    title: longTitle,
-    instructors: allInstructors,
-    reviews: []
-  });
-  return result;
+  const result = await db.collection('courses').updateOne(
+    { department: dept, course_num: num }, // unique
+    {
+      $setOnInsert: {
+        course_num: num,
+        department: dept,
+        title: longTitle,
+        instructors: allInstructors,
+        reviews: []
+      }
+    },
+    { upsert: true }
+  );
 }
 
 
