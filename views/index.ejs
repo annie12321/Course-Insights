@@ -14,19 +14,29 @@
     <%- include("partials/flash.ejs") %>
     <%- include("partials/navbar.ejs") %>
 
-    <form class = "search" method="GET" action="/search/">
-    <p><label>Search: <input type="text" required name="term"></label>
-        <label>Tags: 
-            <select name="tag" multiple size="1">
-                <option value="easyA">Easy A</option>
-                <option value="discussion">Discussion-based</option>
-                <option value="flipped">Flipped classroom</option>
-                <option value="300">300-level</option>
-                <option value="reading">Reading heavy</option>
-                <option value="tests">No tests</option>
-            </select>
-        </label>
-    <input type="submit" value="search"></p>
+    <form class="search" method="GET" action="/">
+        <p>
+            <label>
+                Search:
+                <input type="text" name="query" placeholder="Search courses...">
+            </label>
+
+            <label>
+                Tags:
+                <select name="tag">
+                    <option value="">All</option>
+                    <option value="easyA">Easy A</option>
+                    <option value="discussion">Discussion-based</option>
+                    <option value="flipped">Flipped classroom</option>
+                    <option value="300">300-level</option>
+                    <option value="reading">Reading heavy</option>
+                    <option value="tests">No tests</option>
+                </select>
+            </label>
+
+            <input type="submit" value="Search">
+        </p>
+    </form>
     
     <div id="search-results">
         <% if (results.length != 0) { %>
