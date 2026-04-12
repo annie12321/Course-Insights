@@ -27,6 +27,7 @@ async function insertCourse(db, course) {
   const num = sectionNum.split("-")[0];
   const longTitle = course["Section Long Title"];
   const allInstructors = course["All Instructors"];
+  const fullTitle = dept + " " + num + ": " + longTitle;
 
   const result = await db.collection('courses').updateOne(
     { department: dept, course_num: num }, // unique
@@ -34,6 +35,7 @@ async function insertCourse(db, course) {
       $setOnInsert: {
         course_num: num,
         department: dept,
+        searchTerm: fullTitle,
         title: longTitle,
         instructors: allInstructors,
         reviews: [],
