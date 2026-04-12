@@ -163,8 +163,19 @@ app.post('/logout', (req,res) => {
 });
 
 // renders profile page
-app.get("/profile", requiresLogin,(req, res) => {
-    return res.render("profile.ejs", {user: req.session.user, currentPage: "profile"});
+app.get("/profile", requiresLogin, async (req, res) => {
+    const db = await Connection.open(mongoUri, myDBName);
+    const user = req.session.user;
+    const reviews = await db.collection(REVIEWS)
+        .find({ user_id: user.user_id })
+        .sort({ submittedAt: -1 })
+        .toArray();
+
+    res.render("profile.ejs", {
+        user,
+        reviews,
+        currentPage: "profile"
+    });
 });
 
 // renders home page with search bar

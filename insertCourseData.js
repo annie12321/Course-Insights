@@ -36,7 +36,8 @@ async function insertCourse(db, course) {
         department: dept,
         title: longTitle,
         instructors: allInstructors,
-        reviews: []
+        reviews: [],
+        tags: []
       }
     },
     { upsert: true }

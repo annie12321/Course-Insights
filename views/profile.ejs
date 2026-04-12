@@ -19,8 +19,17 @@
         <p><b>Reviews:</b></p>
         <% if (user.reviews && user.reviews.length > 0) { %>
             <ul class = "reviews">
-                <% user.reviews.forEach((review) => { %>
-                    <li> <%= review %> </li>
+                <% reviews.forEach(function(r) { %>
+                    <div class="review-card">
+                        <p><b>Course:</b> <%= r.department %> <%= r.course_num %></p>
+                        <p><b>Hours/week:</b> <%= r.hours %></p>
+                        <p><b>Difficulty:</b> <%= r.difficulty %></p>
+                        <p><b>Would take again:</b> <%= r.retake ? "Yes" : "No" %></p>
+                        <p><b>Tags:</b> <%= r.tags.join(", ") %></p>
+                        <p><b>Comments:</b> <%= r.comments %></p>
+                        <p><small><%= r.submittedAt ? new Date(r.submittedAt).toLocaleDateString() : "" %></small></p>
+                        <hr>
+                    </div>
                 <% }) %>
             </ul>
         <% } %>
