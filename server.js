@@ -298,7 +298,7 @@ app.get("/search/", requiresLogin, async (req, res) => {
     const db = await Connection.open(mongoUri, myDBName);
     var regex = new RegExp(term, "i");
     let courses = db.collection(COURSES);
-    let results = await courses.find({ $or: [{title: regex}, {course_num: regex}, {department: regex}]}).toArray();
+    let results = await courses.find({searchTerm: regex}).toArray();
     return res.render("index.ejs", {results: results, currentPage: "home"});
 });
 
