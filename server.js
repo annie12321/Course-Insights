@@ -187,29 +187,33 @@ app.get("/course/:dept/:num", requiresLogin, async (req, res) => {
     try {
         const dept = req.params.dept.toUpperCase();
         const num = req.params.num;
-
         const db = await Connection.open(mongoUri, myDBName);
 
         const courseData = await db.collection(COURSES).findOne({
             department: dept,
             course_num: num
         });
-
-        if(!courseData) {
+        if (!courseData) {
             req.flash('error', `Course ${dept}${num} not found.`);
             return res.redirect('/');
         }
 
+        const reviews = await db.collection(REVIEWS)
+            .find({ department: dept, course_num: num })
+            .sort({ submittedAt: -1 })
+            .toArray();
+
         res.render("course.ejs", {
             course: courseData,
+            reviews: reviews,
             user: req.session.user,
             currentPage: "course"
         });
     } catch (error) {
         req.flash('error', `Loading course page error: ${error}`);
-        return res.redirect('/')
+        return res.redirect('/');
     }
-})
+});
 
 // upload course
 app.get("/upload", requiresLogin, async(req, res) => {

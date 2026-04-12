@@ -18,9 +18,29 @@
         <p><b>Distribution(s):</b> <%= course.distributions %></p>
         <p><b>Average hours spent:</b> <%= course.avgHours %></p>
         <p><b>Average Difficulty:</b> <%= course.avgDifficulty %></p>
-        <p><b>Percent that would retake:</b> <%= course.retake %></p>
-        <p><b>Tags:</b> <%= course.tags %></p>
+        <p><b>Percent that would retake:</b> <%= (course.retake * 100).toFixed(0) %>%</p>
+        <p><b>Tags:</b> <%= course.tags ? course.tags.join(", ") : "" %></p>
         <!-- might need special formatting for the list ones (dists, tags) -->
+    </div>
+
+    <div id="reviews-container">
+        <h2>Student Reviews</h2>
+
+        <% if (reviews.length === 0) { %>
+            <p>No reviews yet. Be the first!</p>
+        <% } %>
+
+        <% reviews.forEach(function(r) { %>
+            <div class="review-card">
+                <p><b>User:</b> <%= r.username %></p>
+                <p><b>Hours/week:</b> <%= r.hours %></p>
+                <p><b>Difficulty:</b> <%= r.difficulty %></p>
+                <p><b>Would take again:</b> <%= r.retake ? "Yes" : "No" %></p>
+                <p><b>Tags:</b> <%= r.tags.join(", ") %></p>
+                <p><b>Comments:</b> <%= r.comments %></p>
+                <hr>
+            </div>
+        <% }) %>
     </div>
     <!-- load Bootstrap js -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
