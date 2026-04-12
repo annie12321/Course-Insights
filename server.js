@@ -211,29 +211,46 @@ app.get("/upload", requiresLogin, async(req, res) => {
 app.post("/upload", requiresLogin, async (req, res) => {
     try {
         const db = await Connection.open(mongoUri, myDBName);
-        const [dept, num] = req.body.split("-");
-
+        const [dept, num] = req.body.course.split("-");
         const newReview = {
+            user_id: req.session.user.user_id,
             username: req.session.user.username,
             course_num: num,
             department: dept,
-            hours: Number(req.body["hours-per-week"]),
+            hours: Number(req.body.hoursPerWeek || req.body["hours-per-week"]),
             difficulty: Number(req.body.difficulty),
             retake: req.body["yes-no"] === "yes",
-            tags: Array.isArray(req.body.tag) ? req.body.tag : [req.body.tag],
+            tags: req.body.tag
+                ? (Array.isArray(req.body.tag) ? req.body.tag : [req.body.tag])
+                : [],
             comments: req.body.comments,
             submittedAt: new Date()
         };
 
-        await db.collection(REVIEWS).insertOne(newReview);
+        // reviews
+        const result = await db.collection(REVIEWS).insertOne(newReview);
+        const reviewId = result.insertedId;
 
-        req.flash('info', "Thanks for the reivew!");
+        // users
+        await db.collection(USERS).updateOne(
+            { user_id: req.session.user.user_id },
+            { $push: { reviews: reviewId } }
+        );
+
+        // courses
+        await db.collection(COURSES).updateOne(
+            { department: dept, course_num: num },
+            { $push: { reviews: reviewId } }
+        );
+
+        req.flash('info', "Thanks for the review!");
         res.redirect(`/course/${dept}/${num}`);
     } catch (error) {
+        console.error(error);
         req.flash('error', `Upload course error: ${error}`);
-        return res.redirect('/upload')
+        return res.redirect('/upload');
     }
-})
+});
 
 /**
  * Flashes error message and redirects to login page if user not logged in
