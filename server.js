@@ -159,7 +159,7 @@ app.post("/register", async (req, res) => {
  * @param {Response} res the response object
  */
 app.post('/logout', (req,res) => {
-    if (req.session.username) {
+    if (req.session.user) {
         // clear cookies
         req.session.user = null;
         req.session.loggedIn = false;
