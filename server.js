@@ -51,6 +51,15 @@ app.use(cookieSession({
 
 const ROUNDS = 15;
 
+const tagMap = {
+    easyA: "Easy A",
+    discussion: "Discussion-based",
+    flipped: "Flipped classroom",
+    "300": "300-level",
+    reading: "Reading heavy",
+    tests: "No tests"
+};
+
 // ================================================================
 
 /**
@@ -273,9 +282,13 @@ app.post("/upload", requiresLogin, async (req, res) => {
         );
 
         // courses
+        const prettyTags = newReview.tags.map(t => tagMap[t] || t);
         await db.collection(COURSES).updateOne(
             { department: dept, course_num: num },
-            { $push: { reviews: reviewId } }
+            { 
+                $push: { reviews: reviewId },
+                $addToSet: { tags: { $each: prettyTags } }
+            }
         );
 
         req.flash('info', "Thanks for the review!");
@@ -295,10 +308,22 @@ app.post("/upload", requiresLogin, async (req, res) => {
 app.get("/search/", requiresLogin, async (req, res) => {
     let term = req.query.term;
     let tag = req.query.tag;
+
     const db = await Connection.open(mongoUri, myDBName);
+    const courses = db.collection(COURSES);
+
+    if (!tag) tag = [];
+    else if (!Array.isArray(tag)) tag = [tag];
+
+    tag = tag.map(t => tagMap[t]);
+    
+    let query = {};
+    if (tag.length > 0) {
+        query.tags = { $in: tag };
+    }
     var regex = new RegExp(term, "i");
-    let courses = db.collection(COURSES);
-    let results = await courses.find({searchTerm: regex}).toArray();
+    query.searchTerm = regex;
+    let results = await courses.find(query).toArray();
     return res.render("index.ejs", {results: results, currentPage: "home"});
 });
 
