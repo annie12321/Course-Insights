@@ -293,7 +293,7 @@ app.get("/upload", requiresLogin, async(req, res) => {
 
 /**
  * Processes user submitted coursereview form (using POST) and stores review 
- * in all reviews database collection.
+ * in reviews database collection.
  * Updates reviews for user and course database collections.
  * Requires user to be logged in.
  * If successful, redirects to the course page with a success message.
