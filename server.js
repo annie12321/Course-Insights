@@ -101,6 +101,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
+
 /**
  * Processes registration form (using POST) with username, password, 
  * confirm password, email address, and class year fields.
@@ -152,6 +153,7 @@ app.post("/register", async (req, res) => {
     }
 });
 
+
 /**
  * Processes logout form (using POST)
  * If user is logged in, clears cookies and redirects to login page with success message
@@ -171,7 +173,14 @@ app.post('/logout', (req,res) => {
     }
 });
 
-// renders profile page
+
+/**
+ * Renders user's profile page, which includes basic information and
+ * their submitted reviews.
+ * Requires user to be logged in.
+ * @param {Request} req the request object
+ * @param {Response} res the response object
+ */
 app.get("/profile", requiresLogin, async (req, res) => {
     const db = await Connection.open(mongoUri, myDBName);
     const user = req.session.user;
@@ -187,22 +196,45 @@ app.get("/profile", requiresLogin, async (req, res) => {
     });
 });
 
-// renders home page with search bar
+
+/**
+ * Renders the home page with an empty search result.
+ * Requires user to be logged in.
+ * @param {Request} req the request object
+ * @param {Response} res the response object
+ */
 app.get("/", requiresLogin, (req, res) => {
     return res.render("index.ejs", {results: [], currentPage: "home"});
 });
 
-// renders login page
+
+/**
+ * Renders the login page.
+ * @param {Request} req the request object
+ * @param {Response} res the response object
+ */
 app.get("/login", (req, res) => {
     return res.render("login.ejs");
 });
 
-// renders register page
+
+/**
+ * Renders the register page.
+ * @param {Request} req the request object
+ * @param {Response} res the response object
+ */
 app.get("/register", (req, res) => {
     return res.render("register.ejs");
 });
 
-// course page
+
+/**
+ * Renders a specific course page with course details and reviews.
+ * Requires user to be logged in.
+ * If the course does not exist, flashes an error and redirects to home page.
+ * @param {Request} req the request object
+ * @param {Response} res the response object
+ */
 app.get("/course/:dept/:num", requiresLogin, async (req, res) => {
     try {
         const dept = req.params.dept.toUpperCase();
@@ -235,7 +267,13 @@ app.get("/course/:dept/:num", requiresLogin, async (req, res) => {
     }
 });
 
-// upload course
+
+/**
+ * Renders the upload page form with a dropdown menu of all courses
+ * Requires user to be logged in
+ * @param {Request} req the request object
+ * @param {Response} res the response object
+ */
 app.get("/upload", requiresLogin, async(req, res) => {
     try {
         const db = await Connection.open(mongoUri, myDBName);
@@ -252,6 +290,17 @@ app.get("/upload", requiresLogin, async(req, res) => {
     }
 })
 
+
+/**
+ * Processes user submitted coursereview form (using POST) and stores review 
+ * in all reviews database collection.
+ * Updates reviews for user and course database collections.
+ * Requires user to be logged in.
+ * If successful, redirects to the course page with a success message.
+ * If not, flashes error message and redirects to upload page.
+ * @param {Request} req the request object
+ * @param {Response} res the response object
+ */
 app.post("/upload", requiresLogin, async (req, res) => {
     try {
         const db = await Connection.open(mongoUri, myDBName);
@@ -300,6 +349,7 @@ app.post("/upload", requiresLogin, async (req, res) => {
     }
 });
 
+
 /**
  * Processes form (GET) and searches database for courses matching the search term
  * @param {Request} req the request object
@@ -327,6 +377,7 @@ app.get("/search/", requiresLogin, async (req, res) => {
     return res.render("index.ejs", {results: results, currentPage: "home"});
 });
 
+
 /**
  * Flashes error message and redirects to login page if user not logged in
  * @param {Request} req the request object
@@ -342,6 +393,7 @@ function requiresLogin(req, res, next) {
   } 
 }
 
+
 /**
  * Extracts the user ID from an email address
  * @param {String} email 
@@ -355,6 +407,7 @@ function getUserID(email) {
     // part before the @ is the user ID
     return email.substring(0, position);
 }
+
 
 /**
  * Checks if an email address belongs to the Wellesley College domain
@@ -383,4 +436,3 @@ app.listen(serverPort, function() {
     console.log(`or http://localhost:${serverPort}/`);
     console.log('^C to exit');
 });
-
