@@ -241,6 +241,8 @@ app.get("/course/:dept/:num", requiresLogin, async (req, res) => {
         const num = req.params.num;
         const db = await Connection.open(mongoUri, myDBName);
 
+        // add call to helper to recalculate course statistics
+
         const courseData = await db.collection(COURSES).findOne({
             department: dept,
             course_num: num
@@ -406,7 +408,7 @@ function getUserID(email) {
     }
     // part before the @ is the user ID
     return email.substring(0, position);
-}
+} 
 
 
 /**
