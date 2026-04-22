@@ -11,6 +11,7 @@ const bodyParser = require('body-parser');
 const flash = require('express-flash');
 const cookieSession = require('cookie-session');
 const serveStatic = require('serve-static');
+const multer = require('multer');
 
 // our modules loaded from cwd
 
@@ -36,12 +37,15 @@ app.use(flash());
 app.use(serveStatic('public'));
 app.set('view engine', 'ejs');
 
+app.use('/uploads', express.static('uploads'));
+
 const mongoUri = cs304.getMongoUri();
 const myDBName = "annemily";
 // collection names
 const USERS = "users";
 const COURSES = "courses";
 const REVIEWS = "reviews";
+const FILES = 'files';
 
 app.use(cookieSession({
   name: 'session',
@@ -50,6 +54,37 @@ app.use(cookieSession({
 }));
 
 const ROUNDS = 15;
+
+/**
+ * Creates a string of numbers based on current date 
+ * @param {Date} dateObj
+ * @returns String of time
+ */
+function timeString(dateObj) {
+    if( !dateObj) {
+        dateObj = new Date();
+    }
+    // convert val to two-digit string
+    let d2 = (val) => val < 10 ? '0'+val : ''+val;
+    let hh = d2(dateObj.getHours())
+    let mm = d2(dateObj.getMinutes())
+    let ss = d2(dateObj.getSeconds())
+    return hh+mm+ss
+}
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads')
+  },
+  filename: function (req, file, cb) {
+      let parts = file.originalname.split('.');
+      let ext = parts[parts.length-1];
+      let hhmmss = timeString();
+      cb(null, file.fieldname + '-' + hhmmss + '.' + ext);
+  }
+});
+
+var upload = multer({ storage: storage, limits: {fileSize: 1024 * 1024 * 5 }});
 
 const tagMap = {
     easyA: "Easy A",
@@ -337,10 +372,17 @@ app.get("/upload", requiresLogin, async(req, res) => {
  * @param {Request} req the request object
  * @param {Response} res the response object
  */
-app.post("/upload", requiresLogin, async (req, res) => {
+app.post("/upload", requiresLogin, upload.single('syllabus'), async (req, res) => {
     try {
         const db = await Connection.open(mongoUri, myDBName);
         const [dept, num] = req.body.course.split("-");
+
+        const newFile = {
+            title: req.body.course + " Syllabus",
+            owner: req.session.user.username,
+            path: '/uploads/'+req.file.filename
+        }
+
         const newReview = {
             user_id: req.session.user.user_id,
             username: req.session.user.username,
@@ -353,6 +395,7 @@ app.post("/upload", requiresLogin, async (req, res) => {
                 ? (Array.isArray(req.body.tag) ? req.body.tag : [req.body.tag])
                 : [],
             comments: req.body.comments,
+            syllabus: newFile,
             submittedAt: new Date()
         };
 
@@ -375,6 +418,9 @@ app.post("/upload", requiresLogin, async (req, res) => {
                 $addToSet: { tags: { $each: prettyTags } }
             }
         );
+
+        // files
+        await db.collection(FILES).insertOne(newFile);
 
         req.flash('info', "Thanks for the review!");
         res.redirect(`/course/${dept}/${num}`);
@@ -462,6 +508,18 @@ function checkWellesleyEmail(email) {
 
 // ================================================================
 // postlude
+
+app.use((err, req, res, next) => {
+    console.log('error', err);
+    if(err.code === 'LIMIT_FILE_SIZE') {
+        console.log('file too big')
+        req.flash('error', 'file too big')
+        res.redirect('/')
+    } else {
+        console.error(err.stack)
+        res.status(500).send('Something broke!')
+    }
+})
 
 const serverPort = cs304.getPort(8080);
 

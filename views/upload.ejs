@@ -14,7 +14,7 @@
     <div class="login-container">
         <h1>Upload Review</h1>
         
-        <form action="/upload" method="POST">
+        <form action="/upload" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="course">Course</label>
                 <select name="course" id="course" class="form-control" required>
@@ -63,6 +63,13 @@
                 <input type="text" id="comments" name="comments" placeholder="Review" required>
             </div>
 
+            <div class="file-upload">
+                <p>
+                    <label>Syllabus Upload
+                        <input type="file" accept="application/pdf" name="syllabus" >
+                    </label>
+                </p>
+            </div>
             <button type="submit" class="btn">Review</button>
         </form>
     </div>
