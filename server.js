@@ -392,7 +392,7 @@ app.post("/upload", requiresLogin, async (req, res) => {
  * @param {Response} res the response object
  */
 app.get("/search/", requiresLogin, async (req, res) => {
-    let term = req.query.term;
+    let term = req.query.term || "";
     let tag = req.query.tag;
 
     const db = await Connection.open(mongoUri, myDBName);

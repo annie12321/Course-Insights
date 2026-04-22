@@ -21,18 +21,30 @@
                 <input type="text" name="term" placeholder="Search courses...">
             </label>
 
-            <label>
-                Tags:
-                <select name="tag">
-                    <option value="">All</option>
-                    <option value="easyA">Easy A</option>
-                    <option value="discussion">Discussion-based</option>
-                    <option value="flipped">Flipped classroom</option>
-                    <option value="300">300-level</option>
-                    <option value="reading">Reading heavy</option>
-                    <option value="tests">No tests</option>
-                </select>
-            </label>
+            <div class="form-group">
+                <label><b>Filter by Tags (Select multiple):</b></label>
+                <div class="tag-grid">
+                    <% 
+                    // Define the tags here or pass them from the route
+                    const tags = {
+                        easyA: "Easy A",
+                        discussion: "Discussion-based",
+                        flipped: "Flipped classroom",
+                        "300": "300-level",
+                        reading: "Reading heavy",
+                        tests: "No tests"
+                    };
+                    for (let key in tags) { 
+                    %>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="tag" id="tag-<%= key %>" value="<%= key %>">
+                            <label class="form-check-label" for="tag-<%= key %>">
+                                <%= tags[key] %>
+                            </label>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
 
             <input type="submit" value="Search">
         </p>
