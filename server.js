@@ -326,11 +326,20 @@ app.get("/course/:dept/:num", requiresLogin, async (req, res) => {
             .find({ department: dept, course_num: num })
             .sort({ submittedAt: -1 })
             .toArray();
+        
+        // finds most recenty added syllabus
+        let syllabusTitle = dept+"-"+num+" Syllabus";
+        let files = await db.collection(FILES)
+            .find({title: syllabusTitle, submittedAt: {$exists: true}})
+            .sort({submittedAt: -1})
+            .limit(1)
+            .toArray();
 
         res.render("course.ejs", {
             course: courseData,
             reviews: reviews,
             user: req.session.user,
+            file: files[0],
             currentPage: "course"
         });
     } catch (error) {
@@ -378,10 +387,13 @@ app.post("/upload", requiresLogin, upload.single('syllabus'), async (req, res) =
         const db = await Connection.open(mongoUri, myDBName);
         const [dept, num] = req.body.course.split("-");
 
+        const submittedAt = new Date();
+
         const newFile = {
             title: req.body.course + " Syllabus",
             owner: req.session.user.username,
-            path: '/uploads/'+req.file.filename
+            path: '/uploads/'+req.file.filename,
+            submittedAt: submittedAt
         }
 
         const newReview = {
@@ -397,7 +409,7 @@ app.post("/upload", requiresLogin, upload.single('syllabus'), async (req, res) =
                 : [],
             comments: req.body.comments,
             syllabus: newFile,
-            submittedAt: new Date()
+            submittedAt: submittedAt
         };
 
         // reviews

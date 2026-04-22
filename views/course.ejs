@@ -21,6 +21,10 @@
         <p><b>Percent that would retake:</b> <%= (course.retake * 100).toFixed(0) %>%</p>
         <p><b>Tags:</b> <%= course.tags ? course.tags.join(", ") : "" %></p>
         <!-- might need special formatting for the list ones (dists, tags) -->
+        <% if( file != null ) { %>
+            <iframe class="uploadedSyllabus" src="<%= file.path %>" title="<%= file.title %>" width="100%"  height="600px">
+            </iframe>
+        <% } %>
     </div>
 
     <div id="reviews-container">
