@@ -21,7 +21,12 @@
             <ul class = "reviews">
                 <% reviews.forEach(function(r) { %>
                     <div class="review-card">
-                        <p><b>Course:</b> <%= r.department %> <%= r.course_num %></p>
+                        <p>
+                            <b>Course:</b> 
+                            <a href="/course/<%= r.department %>/<%= r.course_num %>">
+                                <%= r.department %> <%= r.course_num %>
+                            </a>
+                        </p>
                         <p><b>Hours/week:</b> <%= r.hours %></p>
                         <p><b>Difficulty:</b> <%= r.difficulty %></p>
                         <p><b>Would take again:</b> <%= r.retake ? "Yes" : "No" %></p>
