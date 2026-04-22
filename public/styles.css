@@ -5,6 +5,47 @@
     color: black;
 }
 
+.container, #course-container, #profile-container, #reviews-container, #login-container {
+    padding: 30px;
+}
+
+#search-container {
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+}
+
+#search-results-container {
+    max-width: 1000px;  
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* course list */
+.course-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer; 
+    color: #4a4a4a;
+}
+
+.course-card:hover {
+    border-color: #f5e1ef; 
+    background-color: #fdf1f4; 
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
+}
+
+.card-title {
+    font-weight: 700;
+    color: #6c5b7b;
+}
+
+.stretched-link::after {
+    z-index: 1;
+}
+
 #errors {
     font-size: large;
     color: red;
