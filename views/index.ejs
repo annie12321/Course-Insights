@@ -39,7 +39,7 @@
         </div>
         
         <div id="search-results-container" class="mt-5">
-            <% if (results.length === 0 && typeof term !== 'undefined') { %>
+            <% if (results.length === 0) { %>
                 <p class="text-center text-muted">No courses found matching your criteria.</p>
             <% } else { %>
                 <div class="row">

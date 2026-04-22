@@ -33,7 +33,7 @@
         <% reviews.forEach(function(r) { %>
             <div class="review-card">
                 <p>
-                    <b>Verified Student</b> 
+                    <b>User:</b> <%= r.username %>
                     <span class="text-muted small">
                         • <%= r.submittedAt ? new Date(r.submittedAt).toLocaleDateString() : "Recently" %>
                     </span>
