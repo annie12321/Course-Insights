@@ -229,6 +229,39 @@ app.get("/register", (req, res) => {
 
 
 /**
+ * Recalculates and updates statistics for a specific course based on reviews
+ * @param {Object} db database connection
+ * @param {string} dept department
+ * @param {string} num course number
+ */
+async function updateCourseStats(db, dept, num) {
+    const stats = await db.collection(REVIEWS).aggregate([
+        { $match: { department: dept, course_num: num } },
+        { $group: {
+                _id: null,
+                avgHours: { $avg: "$hours" },
+                avgDifficulty: { $avg: "$difficulty" },
+                retakeCount: { $sum: { $cond: ["$retake", 1, 0] } },
+                totalReviews: { $sum: 1 }
+        } }
+    ]).toArray();
+
+    if (stats.length > 0) {
+        const s = stats[0];
+        const retakeRate = (s.retakeCount / s.totalReviews) * 100;
+        await db.collection(COURSES).updateOne(
+            { department: dept, course_num: num },
+            { $set: {
+                    avgHours: Number(s.avgHours.toFixed(1)),
+                    avgDifficulty: Number(s.avgDifficulty.toFixed(1)),
+                    retake: Number(retakeRate.toFixed(0)) // percentage
+            } }
+        );
+    }
+}
+
+
+/**
  * Renders a specific course page with course details and reviews.
  * Requires user to be logged in.
  * If the course does not exist, flashes an error and redirects to home page.
@@ -241,7 +274,8 @@ app.get("/course/:dept/:num", requiresLogin, async (req, res) => {
         const num = req.params.num;
         const db = await Connection.open(mongoUri, myDBName);
 
-        // add call to helper to recalculate course statistics
+        // call to helper to recalculate course statistics
+        await updateCourseStats(db, dept, num);
 
         const courseData = await db.collection(COURSES).findOne({
             department: dept,
