@@ -15,7 +15,7 @@
         <h1><%= course.department %><%= course.course_num %>: <%= course.title %></h1>
         
         <p><b>Instructor(s):</b> <%= course.instructors %></p>
-        <p><b>Distribution(s):</b> <%= course.distributions %></p>
+        <!-- <p><b>Distribution(s):</b> <%= course.distributions %></p> -->
         <p><b>Average hours spent:</b> <%= course.avgHours %></p>
         <p><b>Average Difficulty:</b> <%= course.avgDifficulty %></p>
         <p><b>Percent that would retake:</b> <%= (course.retake * 100).toFixed(0) %>%</p>
@@ -32,7 +32,12 @@
 
         <% reviews.forEach(function(r) { %>
             <div class="review-card">
-                <p><b>User:</b> <%= r.username %></p>
+                <p>
+                    <b>Verified Student</b> 
+                    <span class="text-muted small">
+                        • <%= r.submittedAt ? new Date(r.submittedAt).toLocaleDateString() : "Recently" %>
+                    </span>
+                </p>
                 <p><b>Hours/week:</b> <%= r.hours %></p>
                 <p><b>Difficulty:</b> <%= r.difficulty %></p>
                 <p><b>Would take again:</b> <%= r.retake ? "Yes" : "No" %></p>
