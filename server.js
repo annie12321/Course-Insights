@@ -389,11 +389,16 @@ app.post("/upload", requiresLogin, upload.single('syllabus'), async (req, res) =
 
         const submittedAt = new Date();
 
-        const newFile = {
-            title: req.body.course + " Syllabus",
-            owner: req.session.user.username,
-            path: '/uploads/'+req.file.filename,
-            submittedAt: submittedAt
+        // if user uploaded a file
+        let newFile = null;
+        if (req.file != null) {
+            newFile = {
+                title: req.body.course + " Syllabus",
+                owner: req.session.user.username,
+                path: '/uploads/'+req.file.filename,
+                submittedAt: submittedAt
+            }
+            await db.collection(FILES).insertOne(newFile);
         }
 
         const newReview = {
@@ -431,9 +436,6 @@ app.post("/upload", requiresLogin, upload.single('syllabus'), async (req, res) =
                 $addToSet: { tags: { $each: prettyTags } }
             }
         );
-
-        // files
-        await db.collection(FILES).insertOne(newFile);
 
         req.flash('info', "Thanks for the review!");
         res.redirect(`/course/${dept}/${num}`);
