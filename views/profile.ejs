@@ -20,7 +20,7 @@
         <% if (user.reviews && user.reviews.length > 0) { %>
             <ul class = "reviews">
                 <% reviews.forEach(function(r) { %>
-                    <div class="review-card">
+                    <li class="review-card">
                         <p>
                             <b>Course:</b> 
                             <a href="/course/<%= r.department %>/<%= r.course_num %>">
@@ -34,7 +34,7 @@
                         <p><b>Comments:</b> <%= r.comments %></p>
                         <p><small><%= r.submittedAt ? new Date(r.submittedAt).toLocaleDateString() : "" %></small></p>
                         <hr>
-                    </div>
+                    </li>
                 <% }) %>
             </ul>
         <% } %>
