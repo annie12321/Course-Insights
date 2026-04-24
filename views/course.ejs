@@ -36,6 +36,11 @@
 
         <% reviews.forEach(function(r) { %>
             <div class="review-card">
+                 <% if (user.role === "admin") { %>
+                    <p>
+                        <a href="/update/<%= r._id %>">Update Review</a>
+                    </p>
+                <% } %>
                 <p>
                     <b>User:</b> <%= r.username %>
                     <span class="text-muted small">
