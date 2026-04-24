@@ -12,6 +12,7 @@ const flash = require('express-flash');
 const cookieSession = require('cookie-session');
 const serveStatic = require('serve-static');
 const multer = require('multer');
+const { ObjectId } = require('mongodb');
 
 // our modules loaded from cwd
 
@@ -371,6 +372,70 @@ app.get("/upload", requiresLogin, async(req, res) => {
     }
 })
 
+/**
+ * Renders the update review page form with the correct course
+ * Requires user to be logged in
+ * @param {Request} req the request object
+ * @param {Response} res the response object
+ */
+app.get("/update/:reviewID", requiresLogin, async(req, res) => {
+    try {
+        const db = await Connection.open(mongoUri, myDBName);
+        let newReview = new ObjectId(req.params.reviewID);
+        const review = await db.collection(REVIEWS).findOne({_id: newReview});
+        if (review === null) {
+            req.flash('error', "review does not exist");
+            return res.redirect("/");
+        }
+        if (req.session.user.username != review.username) {
+            req.flash('error', "You can only edit your own reviews!");
+            return res.redirect("/");
+        }
+        res.render("update.ejs", {
+            review: review,
+            user: req.session.user,
+            currentPage: "update"
+        }); 
+    } catch (error) {
+        req.flash('error', `Update course error: ${error}`);
+        return res.redirect('/');
+    }
+});
+
+/**
+ * Processes form (POST) and updates review 
+ * @param {Request} req - the request object
+ * @param {Response} res - the response object
+ */
+app.post("/update/:reviewID", async (req, res) => {
+    return res.redirect('/');
+});
+
+/**
+ * Processes form (POST) and deletes review from database
+ * redirects to home page after deletion
+ * @param {Request} req - the request object
+ * @param {Response} res - the response object
+ */
+app.post("/delete/:reviewID", async (req, res) => {
+    const db = await Connection.open(mongoUri, myDBName);
+    let newReview = new ObjectId(req.params.reviewID);
+    // removes from courses
+    db.collection(COURSES).updateMany(
+        {reviews: newReview },
+        {$pull: {reviews: newReview}
+    });
+    // removes from users
+    db.collection(USERS).updateMany(
+        {reviews: newReview },
+        {$pull: {reviews: newReview}
+    });
+    // removes from reviews
+    await db.collection(REVIEWS).deleteOne({_id: newReview});
+    req.flash('info', "Review was deleted successfully");
+    return res.redirect("/");
+});
+
 
 /**
  * Processes user submitted coursereview form (using POST) and stores review 
@@ -413,7 +478,6 @@ app.post("/upload", requiresLogin, upload.single('syllabus'), async (req, res) =
                 ? (Array.isArray(req.body.tag) ? req.body.tag : [req.body.tag])
                 : [],
             comments: req.body.comments,
-            syllabus: newFile,
             submittedAt: submittedAt
         };
 
