@@ -88,7 +88,7 @@ async function addUsers(db) {
   return;
 }
 
-
+// This is earlier code that we no longer use, just for early testing
 async function addReviews(db) {
   await db.collection('reviews').insertOne({
     review_id: "0001",
