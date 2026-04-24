@@ -22,6 +22,9 @@
                 <% reviews.forEach(function(r) { %>
                     <li class="review-card">
                         <p>
+                            <a href="/update/<%= r._id %>">Update Review</a>
+                        </p>
+                        <p>
                             <b>Course:</b> 
                             <a href="/course/<%= r.department %>/<%= r.course_num %>">
                                 <%= r.department %> <%= r.course_num %>
