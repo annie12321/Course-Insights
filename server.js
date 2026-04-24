@@ -375,6 +375,7 @@ app.get("/upload", requiresLogin, async(req, res) => {
 /**
  * Renders the update review page form with the correct course
  * Requires user to be logged in
+ * Only updates for valid review and correct user
  * @param {Request} req the request object
  * @param {Response} res the response object
  */
@@ -387,7 +388,8 @@ app.get("/update/:reviewID", requiresLogin, async(req, res) => {
             req.flash('error', "review does not exist");
             return res.redirect("/");
         }
-        if (req.session.user.username != review.username) {
+        // only admin or user who made the review can edit/delete it
+        if (req.session.user.username != review.username && req.session.user.role != "admin") {
             req.flash('error', "You can only edit your own reviews!");
             return res.redirect("/");
         }
@@ -404,20 +406,22 @@ app.get("/update/:reviewID", requiresLogin, async(req, res) => {
 
 /**
  * Processes form (POST) and updates review 
+ * Requires user to be logged in
  * @param {Request} req - the request object
  * @param {Response} res - the response object
  */
-app.post("/update/:reviewID", async (req, res) => {
+app.post("/update/:reviewID", requiresLogin, async (req, res) => {
     return res.redirect('/');
 });
 
 /**
  * Processes form (POST) and deletes review from database
+ * Requires user to be logged in
  * redirects to home page after deletion
  * @param {Request} req - the request object
  * @param {Response} res - the response object
  */
-app.post("/delete/:reviewID", async (req, res) => {
+app.post("/delete/:reviewID", requiresLogin, async (req, res) => {
     const db = await Connection.open(mongoUri, myDBName);
     let newReview = new ObjectId(req.params.reviewID);
     // removes from courses
