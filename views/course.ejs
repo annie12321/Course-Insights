@@ -18,7 +18,11 @@
         <!-- <p><b>Distribution(s):</b> <%= course.distributions %></p> -->
         <p><b>Average hours spent:</b> <%= course.avgHours %></p>
         <p><b>Average Difficulty:</b> <%= course.avgDifficulty %></p>
-        <p><b>Percent that would retake:</b> <%= (course.retake * 100).toFixed(0) %>%</p>
+        <p><b>Percent that would retake:</b> 
+            <%= (course.retake !== undefined && course.retake !== null)
+                ? course.retake + "%"
+                : "" %>
+        </p>
         <p><b>Tags:</b> <%= course.tags ? course.tags.join(", ") : "" %></p>
         <!-- might need special formatting for the list ones (dists, tags) -->
         <% if( file != null ) { %>
