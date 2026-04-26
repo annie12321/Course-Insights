@@ -377,18 +377,20 @@ app.get("/course/:dept/:num", requiresLogin, async (req, res) => {
  * @param {Request} req the request object
  * @param {Response} res the response object
  */
-app.get("/upload", requiresLogin, async(req, res) => {
+app.get("/upload/:dept/:num", requiresLogin, async(req, res) => {
     try {
         const db = await Connection.open(mongoUri, myDBName);
 
-        const allCourses = await db.collection(COURSES).find().sort({ department: 1, course_num: 1 }).toArray();
+        const course = await db.collection(COURSES)
+        .findOne({department: req.params.dept, course_num: req.params.num});
+
         res.render("upload.ejs", {
-            courses: allCourses,
+            course: course,
             user: req.session.user,
             currentPage: "upload"
         });
     } catch (error) {
-        req.flash('error', `Loading courses from database error: ${error}`);
+        req.flash('error', `Loading course from database error: ${error}`);
         return res.redirect('/')
     }
 })
@@ -485,10 +487,11 @@ app.post("/delete/:reviewID", requiresLogin, async (req, res) => {
  * @param {Request} req the request object
  * @param {Response} res the response object
  */
-app.post("/upload", requiresLogin, upload.single('syllabus'), async (req, res) => {
+app.post("/upload/:dept/:num", requiresLogin, upload.single('syllabus'), async (req, res) => {
     try {
         const db = await Connection.open(mongoUri, myDBName);
-        const [dept, num] = req.body.course.split("-");
+        const dept = req.params.dept;
+        const num = req.params.num;
 
         const submittedAt = new Date();
 
