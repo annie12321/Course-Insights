@@ -14,17 +14,9 @@
     <div class="upload-container">
         <h1>Upload Review</h1>
         
-        <form action="/upload" method="POST" enctype="multipart/form-data">
+        <form action="/upload/<%= course.department%>/<%= course.course_num %>" method="POST" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="course">Course</label>
-                <select name="course" id="course" class="form-control" required>
-                    <option value="">Choose a course...</option>
-                    <% courses.forEach(function(c) { %>
-                        <option value="<%= c.department %>-<%= c.course_num %>">
-                            <%= c.department %> <%= c.course_num %>: <%= c.title %>
-                        </option>
-                    <% }) %>
-                </select>
+                <p>Course: <%= course.searchTerm %></p>
             </div>
 
             <div class="form-group">
