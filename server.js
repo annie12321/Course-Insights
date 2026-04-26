@@ -272,29 +272,50 @@ app.get("/register", (req, res) => {
  * @param {string} num course number
  */
 async function updateCourseStats(db, dept, num) {
-    const stats = await db.collection(REVIEWS).aggregate([
-        { $match: { department: dept, course_num: num } },
-        { $group: {
-                _id: null,
-                avgHours: { $avg: "$hours" },
-                avgDifficulty: { $avg: "$difficulty" },
-                retakeCount: { $sum: { $cond: ["$retake", 1, 0] } },
-                totalReviews: { $sum: 1 }
-        } }
-    ]).toArray();
+    const reviews = await db.collection(REVIEWS)
+        .find({ department: dept, course_num: num })
+        .toArray();
 
-    if (stats.length > 0) {
-        const s = stats[0];
-        const retakeRate = (s.retakeCount / s.totalReviews) * 100;
-        await db.collection(COURSES).updateOne(
-            { department: dept, course_num: num },
-            { $set: {
-                    avgHours: Number(s.avgHours.toFixed(1)),
-                    avgDifficulty: Number(s.avgDifficulty.toFixed(1)),
-                    retake: Number(retakeRate.toFixed(0)) // percentage
-            } }
-        );
+    if (reviews.length === 0) {
+        return;
     }
+
+    // get aggregate statistics
+    let totalHours = 0;
+    let totalDifficulty = 0;
+    let retakeCount = 0;
+
+    let tagSet = new Set();
+
+    reviews.forEach(r => {
+        totalHours += r.hours || 0;
+        totalDifficulty += r.difficulty || 0;
+        if (r.retake) retakeCount++;
+
+        if (r.tags) {
+            r.tags.forEach(t => {
+                tagSet.add(t);
+            });
+        }
+    });
+
+    const avgHours = totalHours / reviews.length;
+    const avgDifficulty = totalDifficulty / reviews.length;
+    const retakeRate = (retakeCount / reviews.length) * 100;
+    const prettyTags = Array.from(tagSet).map(t => tagMap[t] || t);
+
+    // update course
+    await db.collection(COURSES).updateOne(
+        { department: dept, course_num: num },
+        {
+            $set: {
+                avgHours: Number(avgHours.toFixed(1)),
+                avgDifficulty: Number(avgDifficulty.toFixed(1)),
+                retake: Number(retakeRate.toFixed(0)),
+                tags: prettyTags
+            }
+        }
+    );
 }
 
 
@@ -372,37 +393,6 @@ app.get("/upload", requiresLogin, async(req, res) => {
     }
 })
 
-/**
- * Renders the update review page form with the correct course
- * Requires user to be logged in
- * Only updates for valid review and correct user
- * @param {Request} req the request object
- * @param {Response} res the response object
- */
-app.get("/update/:reviewID", requiresLogin, async(req, res) => {
-    try {
-        const db = await Connection.open(mongoUri, myDBName);
-        let newReview = new ObjectId(req.params.reviewID);
-        const review = await db.collection(REVIEWS).findOne({_id: newReview});
-        if (review === null) {
-            req.flash('error', "review does not exist");
-            return res.redirect("/");
-        }
-        // only admin or user who made the review can edit/delete it
-        if (req.session.user.username != review.username && req.session.user.role != "admin") {
-            req.flash('error', "You can only edit your own reviews!");
-            return res.redirect("/");
-        }
-        res.render("update.ejs", {
-            review: review,
-            user: req.session.user,
-            currentPage: "update"
-        }); 
-    } catch (error) {
-        req.flash('error', `Update course error: ${error}`);
-        return res.redirect('/');
-    }
-});
 
 /**
  * Processes form (POST) and updates review 
@@ -411,7 +401,51 @@ app.get("/update/:reviewID", requiresLogin, async(req, res) => {
  * @param {Response} res - the response object
  */
 app.post("/update/:reviewID", requiresLogin, async (req, res) => {
-    return res.redirect('/');
+    try {
+        const db = await Connection.open(mongoUri, myDBName);
+        let reviewId = new ObjectId(req.params.reviewID);
+
+        // find review
+        const review = await db.collection(REVIEWS).findOne({ _id: reviewId });
+        if (!review) {
+            req.flash('error', "Review does not exist.");
+            return res.redirect("/");
+        }
+        if (req.session.user.username !== review.username && req.session.user.role !== "admin") {
+            req.flash('error', "You can only edit your own reviews.");
+            return res.redirect("/");
+        }
+
+        const updatedReview = {
+            hours: Number(req.body.hoursPerWeek || req.body["hours-per-week"]),
+            difficulty: Number(req.body.difficulty),
+            retake: req.body["yes-no"] === "yes",
+            tags: req.body.tag
+                ? (Array.isArray(req.body.tag) ? req.body.tag : [req.body.tag])
+                : [],
+            comments: req.body.comments,
+        };
+
+        // update review
+        await db.collection(REVIEWS).updateOne(
+            { _id: reviewId },
+            { $set: updatedFields }
+        );
+
+        // aggregate statistics
+        await updateCourseStats(db, review.department, review.course_num);
+
+        req.flash('info', "Update successful.");
+        res.render("update.ejs", {
+            review: review,
+            user: req.session.user,
+            currentPage: "update"
+        }); 
+    } catch (error) {
+        console.error(error);
+        req.flash('error', `Update course error: ${error}`);
+        return res.redirect('/');
+    }
 });
 
 /**
@@ -496,14 +530,7 @@ app.post("/upload", requiresLogin, upload.single('syllabus'), async (req, res) =
         );
 
         // courses
-        const prettyTags = newReview.tags.map(t => tagMap[t] || t);
-        await db.collection(COURSES).updateOne(
-            { department: dept, course_num: num },
-            { 
-                $push: { reviews: reviewId },
-                $addToSet: { tags: { $each: prettyTags } }
-            }
-        );
+        await updateCourseStats(db, dept, num);
 
         req.flash('info', "Thanks for the review!");
         res.redirect(`/course/${dept}/${num}`);
