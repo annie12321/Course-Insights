@@ -397,13 +397,46 @@ app.get("/upload/:dept/:num", requiresLogin, async(req, res) => {
 
 
 /**
+ * Renders the update review page form with the correct course
+ * Requires user to be logged in
+ * Only updates for valid review and correct user
+ * @param {Request} req the request object
+ * @param {Response} res the response object
+ */
+app.get("/update/:reviewID", requiresLogin, async(req, res) => {
+    try {
+        const db = await Connection.open(mongoUri, myDBName);
+        let newReview = new ObjectId(req.params.reviewID);
+        const review = await db.collection(REVIEWS).findOne({_id: newReview});
+        if (review === null) {
+            req.flash('error', "review does not exist");
+            return res.redirect("/");
+        }
+        // only admin or user who made the review can edit/delete it
+        if (req.session.user.username != review.username && req.session.user.role != "admin") {
+            req.flash('error', "You can only edit your own reviews!");
+            return res.redirect("/");
+        }
+        res.render("update.ejs", {
+            review: review,
+            user: req.session.user,
+            currentPage: "update"
+        }); 
+    } catch (error) {
+        req.flash('error', `Update course error: ${error}`);
+        return res.redirect('/');
+    }
+});
+
+
+/**
  * Processes form (POST) and updates review 
  * Requires user to be logged in
  * @param {Request} req - the request object
  * @param {Response} res - the response object
  */
-app.post("/update/:reviewID", requiresLogin, async (req, res) => {
-    try {
+app.post("/update/:reviewID", requiresLogin, upload.single('syllabus'), async (req, res) => {    try {
+        console.log("BODY:", req.body); // debug purposes
         const db = await Connection.open(mongoUri, myDBName);
         let reviewId = new ObjectId(req.params.reviewID);
 
@@ -413,9 +446,24 @@ app.post("/update/:reviewID", requiresLogin, async (req, res) => {
             req.flash('error', "Review does not exist.");
             return res.redirect("/");
         }
+
         if (req.session.user.username !== review.username && req.session.user.role !== "admin") {
             req.flash('error', "You can only edit your own reviews.");
             return res.redirect("/");
+        }
+
+        const submittedAt = new Date();
+
+        // if user uploaded a file
+        let newFile = null;
+        if (req.file != null) {
+            newFile = {
+                title: req.body.course + " Syllabus",
+                owner: req.session.user.username,
+                path: '/uploads/'+req.file.filename,
+                submittedAt: submittedAt
+            }
+            await db.collection(FILES).insertOne(newFile);
         }
 
         const updatedReview = {
@@ -426,23 +474,20 @@ app.post("/update/:reviewID", requiresLogin, async (req, res) => {
                 ? (Array.isArray(req.body.tag) ? req.body.tag : [req.body.tag])
                 : [],
             comments: req.body.comments,
+            submittedAt: submittedAt
         };
 
         // update review
         await db.collection(REVIEWS).updateOne(
             { _id: reviewId },
-            { $set: updatedFields }
+            { $set: updatedReview }
         );
 
         // aggregate statistics
         await updateCourseStats(db, review.department, review.course_num);
 
         req.flash('info', "Update successful.");
-        res.render("update.ejs", {
-            review: review,
-            user: req.session.user,
-            currentPage: "update"
-        }); 
+        return res.redirect(`/course/${review.department}/${review.course_num}`);
     } catch (error) {
         console.error(error);
         req.flash('error', `Update course error: ${error}`);
