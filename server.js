@@ -372,7 +372,7 @@ app.get("/course/:dept/:num", requiresLogin, async (req, res) => {
 
 
 /**
- * Renders the upload page form with a dropdown menu of all courses
+ * Renders the upload page course form with specified course
  * Requires user to be logged in
  * @param {Request} req the request object
  * @param {Response} res the response object
