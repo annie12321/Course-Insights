@@ -517,6 +517,8 @@ app.post("/delete/:reviewID", requiresLogin, async (req, res) => {
     });
     // removes from reviews
     await db.collection(REVIEWS).deleteOne({_id: newReview});
+    // aggregate statistics
+    await updateCourseStats(db, newReview.department, newReview.course_num);
     req.flash('info', "Review was deleted successfully");
     return res.redirect("/");
 });
