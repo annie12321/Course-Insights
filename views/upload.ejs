@@ -6,7 +6,7 @@
     <!-- loading Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- load local stylesheet (css) -->
-    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/styles.css">
     </head>
 <body>
     <%- include("partials/navbar.ejs") %>
@@ -34,11 +34,13 @@
             </div>
 
             <div class="form-group">
-                <label>Would take this class again?</label><br>
-                <input type="radio" id="retake-yes" name="yes-no" value="yes">
-                <label for="retake-yes">Yes</label><br>
-                <input type="radio" id="retake-no" name="yes-no" value="no" checked>
-                <label for="retake-no">No</label><br>
+                <fieldset>
+                    <legend>Would take this class again?</legend><br>
+                    <input type="radio" id="retake-yes" name="yes-no" value="yes">
+                    <label for="retake-yes">Yes</label><br>
+                    <input type="radio" id="retake-no" name="yes-no" value="no" checked>
+                    <label for="retake-no">No</label><br>
+                </fieldset>
             </div>
 
             <div class="form-group">

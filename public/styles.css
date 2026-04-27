@@ -46,6 +46,11 @@
     z-index: 1;
 }
 
+.uploadedSyllabus {
+    width: 100%;
+    height: 600px;
+}
+
 #errors {
     font-size: large;
     color: red;

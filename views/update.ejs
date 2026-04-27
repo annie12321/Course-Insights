@@ -21,26 +21,28 @@
             </div>
 
             <div class="form-group">
-                <label>Average hours per Week: <span id="hoursValue">10</span></label>
+                <label for="hours-per-week">Average hours per Week: <span id="hoursValue">10</span></label>
                 <input type="range" id="hours-per-week" name="hours-per-week" min="0" max="30" value="<%= review.hours %>" step="1">
             </div>
 
             <div class="form-group">
-                <label>Difficulty: <span id="difficultyValue">3</span></label>
+                <label for="difficulty">Difficulty: <span id="difficultyValue">3</span></label>
                 <input type="range" id="difficulty" name="difficulty" min="1" max="5" value="<%= review.difficulty %>" step="0.5">
             </div>
 
             <div class="form-group">
-                <label for="take-again">Would take this class again?</label>
-                <input type="radio" id="yes" name="yes-no" value="yes" <%= review.retake ? 'checked' : '' %>>
-                <label for="yes">Yes</label><br>
-                <input type="radio" id="no" name="yes-no" value="no" <%= !review.retake ? 'checked' : '' %>>
-                <label for="no">No</label><br>
+                <fieldset>
+                    <legend>Would take this class again?</legend>
+                    <input type="radio" id="yes" name="yes-no" value="yes" <%= review.retake ? 'checked' : '' %>>
+                    <label for="yes">Yes</label><br>
+                    <input type="radio" id="no" name="yes-no" value="no" <%= !review.retake ? 'checked' : '' %>>
+                    <label for="no">No</label><br>
+                </fieldset>
             </div>
 
             <div class="form-group">
                 <label for="tags">Tags</label>
-                <select name="tag" multiple size="1">
+                <select name="tag" id="tags" multiple size="1">
                     <option value="easyA" <%= review.tags && review.tags.includes("easyA") ? "selected" : "" %>>Easy A</option>
                     <option value="discussion" <%= review.tags && review.tags.includes("discussion") ? "selected" : "" %>>Discussion-based</option>
                     <option value="flipped" <%= review.tags && review.tags.includes("flipped") ? "selected" : "" %>>Flipped classroom</option>

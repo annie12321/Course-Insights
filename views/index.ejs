@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>Course Insights</title>
     <!-- loading Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- load local stylesheet (css) -->
-    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <%- include("partials/flash.ejs") %>
@@ -20,8 +20,8 @@
                         <input type="text" name="term" placeholder="Search courses...">
                     </label>
 
-                    <label>Tags: 
-                        <select name="tag" multiple size="1">
+                    <label for="tags">Tags: 
+                        <select name="tag" id="tags" multiple size="1">
                             <option value="easyA">Easy A</option>
                             <option value="discussion">Discussion-based</option>
                             <option value="flipped">Flipped classroom</option>
@@ -55,7 +55,7 @@
                                         <b>Instructor:</b> <%= result.instructors %>
                                     </p>
                                     
-                                    <a href="/course/<%= result.department %>/<%= result.course_num %>" class="stretched-link"></a>
+                                    <a href="/course/<%= result.department %>/<%= result.course_num %>" aria-label="View details for <%= result.department %> <%= result.course_num %>" class="stretched-link"></a>
                                 </div>
                             </div>
                         </div>
