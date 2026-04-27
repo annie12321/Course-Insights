@@ -46,6 +46,11 @@
     z-index: 1;
 }
 
+.btn-primary {
+    border-color: #000000; 
+    background-color: #59003e;
+}
+
 .uploadedSyllabus {
     width: 100%;
     height: 600px;
