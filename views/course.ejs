@@ -31,9 +31,9 @@
         <% } %>
     </div>
 
-    <p>
-        <a href="/upload/<%= course.department %>/<%= course.course_num %>">Upload Review</a>
-    </p>
+    <div>
+       <p> <a href="/upload/<%= course.department %>/<%= course.course_num %>" class="btn btn-primary">Upload Review</a></p>
+    </div>
 
     <div id="reviews-container">
         <h2>Student Reviews</h2>
@@ -46,7 +46,7 @@
             <div class="review-card">
                  <% if (user.role === "admin") { %>
                     <p>
-                        <a href="/update/<%= r._id %>">Update Review</a>
+                        <a href="/update/<%= r._id %>" class="btn btn-primary">Update Review</a>
                     </p>
                 <% } %>
                 <p>
