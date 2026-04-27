@@ -4,8 +4,8 @@
 const path = require('path');
 
 require("dotenv").config({ path: path.join(process.env.HOME, '.cs304env')});
-const { Connection } = require('./connection');
-const cs304 = require('./cs304');
+const { Connection } = require('./../connection');
+const cs304 = require('./../cs304');
 const bcrypt = require('bcrypt');
 
 const mongoUri = cs304.getMongoUri();
@@ -18,9 +18,7 @@ console.log(courseData);
 
 const ROUNDS = 15;
 
-// insert course
 async function insertCourse(db, course) {
-  // process data
   const section = course["Section"];
   const dept = section.split(" ")[0];
   const sectionNum = section.split(" ")[1];
@@ -29,17 +27,19 @@ async function insertCourse(db, course) {
   const allInstructors = course["All Instructors"];
   const fullTitle = dept + " " + num + ": " + longTitle;
 
-  const result = await db.collection('courses').updateOne(
-    { department: dept, course_num: num }, // unique
+  await db.collection('courses').updateOne(
+    { department: dept, course_num: num },
     {
       $setOnInsert: {
         course_num: num,
         department: dept,
         searchTerm: fullTitle,
         title: longTitle,
-        instructors: allInstructors,
         reviews: [],
         tags: []
+      },
+      $addToSet: {
+        instructors: allInstructors
       }
     },
     { upsert: true }
@@ -88,7 +88,7 @@ async function addUsers(db) {
   return;
 }
 
-// This is earlier code that we no longer use, just for early testing
+// NOTE: This is earlier code that we no longer use, just for early testing
 async function addReviews(db) {
   await db.collection('reviews').insertOne({
     review_id: "0001",
@@ -147,10 +147,12 @@ async function main() {
 
   console.log('reset database...\n');
 
+  // delete everything
   await my_db.collection('courses').deleteMany({ }); 
   await my_db.collection('users').deleteMany({ }); 
   await my_db.collection('reviews').deleteMany({ }); 
   
+  // insert courses
   console.log('starting course insertion...\n');
 
   for (let i = 0; i < courseDataLen; i++) {
@@ -159,22 +161,23 @@ async function main() {
     await insertCourse(my_db, course);
   }
 
+  // insert test data
   console.log('starting user and review insertion...\n');
 
   await addUsers(my_db);
-  await addReviews(my_db);
+  // await addReviews(my_db);
 
-  console.log('updating courses...\n');
+  // NOTE: This is earlier code that we no longer use, just for early testing
+  // console.log('updating courses...\n');
+  // await my_db.collection('courses').updateOne(
+  //   { course_num: "304" , department: "CS" },
+  //   { $set: { distributions: ["MM"] , avgHours: 9, avgDifficulty: 3.33, retake: 0.8, tags: ["Flipped Classroom", "300-level"]}}
+  // );
 
-  await my_db.collection('courses').updateOne(
-    { course_num: "304" , department: "CS" },
-    { $set: { distributions: ["MM"] , avgHours: 9, avgDifficulty: 3.33, retake: 0.8, tags: ["Flipped Classroom", "300-level"]}}
-  );
-
-  await my_db.collection('courses').updateOne(
-    { course_num: "231" , department: "CS" },
-    { $set: { distributions: ["MM"] , avgHours: 13, avgDifficulty: 4.79, retake: 0.34, tags: ["Reading heavy"]}}
-  );
+  // await my_db.collection('courses').updateOne(
+  //   { course_num: "231" , department: "CS" },
+  //   { $set: { distributions: ["MM"] , avgHours: 13, avgDifficulty: 4.79, retake: 0.34, tags: ["Reading heavy"]}}
+  // );
 
   await Connection.close();
 }
