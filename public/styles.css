@@ -56,6 +56,10 @@
     height: 600px;
 }
 
+legend {
+    font-size: medium;
+}
+
 #errors {
     font-size: large;
     color: red;
