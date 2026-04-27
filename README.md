@@ -40,7 +40,7 @@ Course Insights will be a valuable resource for Wellesley students during course
 Course Insights is currently in it's Alpha version, meaning most of the base functionality is there, but the UI will be improved in the coming weeks.
 
 # Directions for Use
-You can login using one of our username / password combinations above. Then you can type into the search bar any text (for example, try “CS 304”). You can also select any number of tags which further filter down your search. We haven’t manually put in many reviews yet, so there might not be any courses with a specific tag in the database yet. After you click “Search”, a list of hyperlinked courses will come up, if the search matches them. You can click on any course, and the course page will be loaded. 
+You can create an account and log in. Then you can type into the search bar any text (for example, try “CS 304”). You can also select any number of tags which further filter down your search. We haven’t manually put in many reviews yet, so there might not be any courses with a specific tag in the database yet. After you click “Search”, a list of hyperlinked courses will come up, if the search matches them. You can click on any course, and the course page will be loaded. 
 
 You can click “Upload Review” on the course display page and fill out the form to upload a review for that specific course. You can add a syllabus that is a pdf. Then, you can look at your own profile by clicking “Profile” in the nav bar, and see your new review underneath your profile information (it will not display the syllabus). You can click on “Update Review” to update or delete your review.
 
