@@ -14,7 +14,7 @@
     <div id="course-container">
         <h1><%= course.department %><%= course.course_num %>: <%= course.title %></h1>
         
-        <p><b>Instructor(s):</b> <%= course.instructors.join(", ") %></p>
+        <p><b>Instructor(s):</b> <%= course.instructors.join("; ") %></p>
         <!-- <p><b>Distribution(s):</b> <%= course.distributions %></p> -->
         <p><b>Average hours spent:</b> <%= course.avgHours %></p>
         <p><b>Average Difficulty:</b> <%= course.avgDifficulty %></p>
