@@ -32,6 +32,9 @@ function loginAjax() {
         .catch((error) => { console.error(error); });
 }
 
+/**
+ * Provides numberical labels for range sliders
+ */
 document.addEventListener("DOMContentLoaded", () => {
     const hoursSlider = document.getElementById("hours-per-week");
     const hoursValue = document.getElementById("hoursValue");
