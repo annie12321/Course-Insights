@@ -52,7 +52,7 @@
                                         <%= result.title %>
                                     </h6>
                                     <p class="card-text small mt-2 mb-0">
-                                        <b>Instructor:</b> <%= result.instructors %>
+                                        <b>Instructor(s):</b> <%= course.instructors.join("; ") %>
                                     </p>
                                     
                                     <a href="/course/<%= result.department %>/<%= result.course_num %>" aria-label="View details for <%= result.department %> <%= result.course_num %>" class="stretched-link"></a>
