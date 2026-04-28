@@ -12,34 +12,89 @@
     <%- include("partials/navbar.ejs") %>
 
     <div id="profile-container">
-        <h1><%= user.username %>'s Profile</h1>
-        <p><b>Role:</b> <%= user.role %></p>
-        <p><b>Email:</b> <%= user.email %></p>
-        <p><b>Class Year:</b> <%= user.class_year %></p>
-        <p><b>Reviews:</b></p>
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h3 class="card-title mb-3">
+                    <%= user.username %>'s Profile
+                </h3>
+
+                <p class="card-text mb-1">
+                    <b>Role:</b> <%= user.role %>
+                </p>
+
+                <p class="card-text mb-1">
+                    <b>Email:</b> <%= user.email %>
+                </p>
+
+                <p class="card-text mb-0">
+                    <b>Class Year:</b> <%= user.class_year %>
+                </p>
+            </div>
+        </div>
+
+        <h4 class="mb-3">Your Reviews</h4>
+
         <% if (reviews && reviews.length > 0) { %>
-            <ul class = "reviews">
+            <div class="row mt-3">
                 <% reviews.forEach(function(r) { %>
-                    <li class="review-card">
-                        <p>
-                            <a href="/update/<%= r._id %>" class="btn btn-primary">Update Review</a>
-                        </p>
-                        <p>
-                            <b>Course:</b> 
-                            <a href="/course/<%= r.department %>/<%= r.course_num %>">
-                                <%= r.department %> <%= r.course_num %>
-                            </a>
-                        </p>
-                        <p><b>Hours/week:</b> <%= r.hours %></p>
-                        <p><b>Difficulty:</b> <%= r.difficulty %></p>
-                        <p><b>Would take again:</b> <%= r.retake ? "Yes" : "No" %></p>
-                        <p><b>Tags:</b> <%= r.tags.join(", ") %></p>
-                        <p><b>Comments:</b> <%= r.comments %></p>
-                        <p><small><%= r.submittedAt ? new Date(r.submittedAt).toLocaleDateString() : "" %></small></p>
-                        <hr>
-                    </li>
+                    <div class="col-12 mb-3">
+                        <div class="card course-card shadow-sm position-relative">
+                            <div class="card-body">
+                                <h5 class="card-title mb-1">
+                                    <%= r.department %> <%= r.course_num %>
+                                </h5>
+                                <h6 class="card-subtitle mb-2 text-muted">
+                                    Review
+                                </h6>
+                                <p class="card-text small mb-1">
+                                    <b>Hours/week:</b> <%= r.hours %> |
+                                    <b>Difficulty:</b> <%= r.difficulty %>
+                                </p>
+                                <p class="card-text small mb-1">
+                                    <b>Would take again:</b> <%= r.retake ? "Yes" : "No" %>
+                                </p>
+                                <p class="card-text small mb-2">
+                                    <b>Tags:</b>
+                                    <% 
+                                        const tagMap = {
+                                            easyA: { label: "Easy A", class: "badge-success" },
+                                            discussion: { label: "Discussion-based", class: "badge-info" },
+                                            flipped: { label: "Flipped classroom", class: "badge-primary" },
+                                            "300": { label: "300-level", class: "badge-warning" },
+                                            reading: { label: "Reading heavy", class: "badge-dark" },
+                                            tests: { label: "No tests", class: "badge-secondary" }
+                                        };
+                                    %>
+
+                                    <% r.tags.forEach(tag => { %>
+                                        <% const t = tagMap[tag]; %>
+                                        <% if (t) { %>
+                                            <span class="badge badge-pill <%= t.class %> mr-1">
+                                                <%= t.label %>
+                                            </span>
+                                        <% } %>
+                                    <% }) %>
+                                </p>
+                                <p class="card-text small mb-2">
+                                    <b>Comments:</b> <%= r.comments %>
+                                </p>
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        <%= r.submittedAt ? new Date(r.submittedAt).toLocaleDateString() : "" %>
+                                    </small>
+                                </p>
+                                <a href="/update/<%= r._id %>" class="btn btn-primary btn-sm">
+                                    Update Review
+                                </a>
+                                <a href="/course/<%= r.department %>/<%= r.course_num %>"
+                                    class="stretched-link"
+                                    aria-label="View course">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 <% }) %>
-            </ul>
+            </div>
         <% } %>
     </div>
 

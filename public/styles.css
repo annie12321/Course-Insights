@@ -52,12 +52,52 @@
 }
 
 .uploadedSyllabus {
-    width: 100%;
+    width: 80%;
     height: 600px;
 }
 
 legend {
     font-size: medium;
+}
+
+.badge-light {
+    background-color: #f5e1ef;
+    color: #59003e;
+    border: 1px solid #e0c3d9;
+}
+
+.badge-light:hover {
+    background-color: #fdf1f4;
+}
+
+.badge-success {
+    background-color: #d4edda;
+    color: #2e6f40;
+}
+
+.badge-info {
+    background-color: #e3f2fd;
+    color: #2a5d84;
+}
+
+.badge-primary {
+    background-color: #e9ddf2;
+    color: #5c3d7a;
+}
+
+.badge-warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.badge-dark {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.badge-secondary {
+    background-color: #f5e1ef;
+    color: #59003e;
 }
 
 #errors {
