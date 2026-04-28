@@ -35,3 +35,16 @@ The only web form we’ll need to create is for users entering a course review. 
 
 # Conclusion
 Course Insights will be a valuable resource for Wellesley students during course planning registration, containing five different features that will help with the security and usability of the application. Students will be able to gain knowledge about their potential courses and read reviews from peers who have taken the class. 
+
+# Status of Project
+Course Insights is currently in it's Alpha version, meaning most of the base functionality is there, but the UI will be improved in the coming weeks.
+
+# Directions for Use
+You can create an account and log in. Then you can type into the search bar any text (for example, try “CS 304”). You can also select any number of tags which further filter down your search. We haven’t manually put in many reviews yet, so there might not be any courses with a specific tag in the database yet. After you click “Search”, a list of hyperlinked courses will come up, if the search matches them. You can click on any course, and the course page will be loaded. 
+
+You can click “Upload Review” on the course display page and fill out the form to upload a review for that specific course. You can add a syllabus that is a pdf. Then, you can look at your own profile by clicking “Profile” in the nav bar, and see your new review underneath your profile information (it will not display the syllabus). You can click on “Update Review” to update or delete your review.
+
+You can click on “Course Insights” or “Home” in the nav bar to return to the search page. You can then search for the course you just reviewed, using words and/or tags, and see the course you reviewed. The most recently added syllabus for that course will be displayed. If you’re an admin, you can click on “Update Review” to update or delete reviews.
+
+If you go back to the login page by clicking the logout button, you can also create an account for yourself. To do so, click the “Register here.” hyperlink underneath the login section. After creating an account, you can then log out by clicking the “Logout” button in the nav bar, and log back in with your username and password. You shouldn’t be able to access any of the pages (besides login and register) without being logged in.
+
