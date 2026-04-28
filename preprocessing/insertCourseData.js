@@ -36,7 +36,8 @@ async function insertCourse(db, course) {
         searchTerm: fullTitle,
         title: longTitle,
         reviews: [],
-        tags: []
+        tags: [],
+        usersBookmarked: []
       },
       $addToSet: {
         instructors: allInstructors
@@ -62,7 +63,8 @@ async function addUsers(db) {
     hash: hash1,
     role: "admin",
     class_year: "2026",
-    reviews: []
+    reviews: [],
+    bookmarked: []
   });
 
   await db.collection('users').insertOne({
@@ -72,7 +74,8 @@ async function addUsers(db) {
     hash: hash2,
     role: "admin",
     class_year: "2028",
-    reviews: []
+    reviews: [],
+    bookmarked: []
   });
 
   await db.collection('users').insertOne({
@@ -82,7 +85,8 @@ async function addUsers(db) {
     hash: hash3,
     role: "student",
     class_year: "2026",
-    reviews: []
+    reviews: [],
+    bookmarked: []
   });
 
   return;

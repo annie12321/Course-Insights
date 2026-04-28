@@ -458,7 +458,7 @@ app.post("/update/:reviewID", requiresLogin, upload.single('syllabus'), async (r
         let newFile = null;
         if (req.file != null) {
             newFile = {
-                title: req.body.course + " Syllabus",
+                title: review.department + "-" + review.course_num + " Syllabus",
                 owner: req.session.user.username,
                 path: '/uploads/'+req.file.filename,
                 submittedAt: submittedAt
