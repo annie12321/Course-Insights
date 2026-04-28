@@ -37,7 +37,7 @@ async function insertCourse(db, course) {
         title: longTitle,
         reviews: [],
         tags: [],
-        likedUsers: []
+        usersBookmarked: []
       },
       $addToSet: {
         instructors: allInstructors
