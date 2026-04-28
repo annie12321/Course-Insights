@@ -539,6 +539,7 @@ app.post("/upload/:dept/:num", requiresLogin, upload.single('syllabus'), async (
         const db = await Connection.open(mongoUri, myDBName);
         const dept = req.params.dept;
         const num = req.params.num;
+        const course = dept + '-' + num;
 
         const submittedAt = new Date();
 
@@ -546,7 +547,7 @@ app.post("/upload/:dept/:num", requiresLogin, upload.single('syllabus'), async (
         let newFile = null;
         if (req.file != null) {
             newFile = {
-                title: req.body.course + " Syllabus",
+                title: course + " Syllabus",
                 owner: req.session.user.username,
                 path: '/uploads/'+req.file.filename,
                 submittedAt: submittedAt
