@@ -377,32 +377,6 @@ app.get("/course/:dept/:num", requiresLogin, async (req, res) => {
     }
 });
 
-
-/**
- * Renders the upload page course form with specified course
- * Requires user to be logged in
- * @param {Request} req the request object
- * @param {Response} res the response object
- */
-app.get("/upload/:dept/:num", requiresLogin, async(req, res) => {
-    try {
-        const db = await Connection.open(mongoUri, myDBName);
-
-        const course = await db.collection(COURSES)
-        .findOne({department: req.params.dept, course_num: req.params.num});
-
-        res.render("upload.ejs", {
-            course: course,
-            user: req.session.user,
-            currentPage: "upload"
-        });
-    } catch (error) {
-        req.flash('error', `Loading course from database error: ${error}`);
-        return res.redirect('/')
-    }
-})
-
-
 /**
  * Renders the update review page form with the correct course
  * Requires user to be logged in
@@ -442,7 +416,8 @@ app.get("/update/:reviewID", requiresLogin, async(req, res) => {
  * @param {Request} req - the request object
  * @param {Response} res - the response object
  */
-app.post("/update/:reviewID", requiresLogin, upload.single('syllabus'), async (req, res) => {    try {
+app.post("/update/:reviewID", requiresLogin, upload.single('syllabus'), async (req, res) => {    
+    try {
         console.log("BODY:", req.body); // debug purposes
         const db = await Connection.open(mongoUri, myDBName);
         let reviewId = new ObjectId(req.params.reviewID);
@@ -510,26 +485,56 @@ app.post("/update/:reviewID", requiresLogin, upload.single('syllabus'), async (r
  * @param {Response} res - the response object
  */
 app.post("/delete/:reviewID", requiresLogin, async (req, res) => {
-    const db = await Connection.open(mongoUri, myDBName);
-    let newReview = new ObjectId(req.params.reviewID);
-    // removes from courses
-    db.collection(COURSES).updateMany(
-        {reviews: newReview },
-        {$pull: {reviews: newReview}
-    });
-    // removes from users
-    db.collection(USERS).updateMany(
-        {reviews: newReview },
-        {$pull: {reviews: newReview}
-    });
-    // removes from reviews
-    await db.collection(REVIEWS).deleteOne({_id: newReview});
-    // aggregate statistics
-    await updateCourseStats(db, newReview.department, newReview.course_num);
-    req.flash('info', "Review was deleted successfully");
-    return res.redirect("/");
+    try {
+        const db = await Connection.open(mongoUri, myDBName);
+        let newReview = new ObjectId(req.params.reviewID);
+        // removes from courses
+        db.collection(COURSES).updateMany(
+            {reviews: newReview },
+            {$pull: {reviews: newReview}
+        });
+        // removes from users
+        db.collection(USERS).updateMany(
+            {reviews: newReview },
+            {$pull: {reviews: newReview}
+        });
+        // removes from reviews
+        await db.collection(REVIEWS).deleteOne({_id: newReview});
+        // aggregate statistics
+        await updateCourseStats(db, newReview.department, newReview.course_num);
+        req.flash('info', "Review was deleted successfully");
+        return res.redirect("/");
+    }  
+    catch (error) {
+        console.error(error);
+        req.flash('error', `Update course error: ${error}`);
+        return res.redirect('/');
+    }
 });
 
+/**
+ * Renders the upload page course form with specified course
+ * Requires user to be logged in
+ * @param {Request} req the request object
+ * @param {Response} res the response object
+ */
+app.get("/upload/:dept/:num", requiresLogin, async(req, res) => {
+    try {
+        const db = await Connection.open(mongoUri, myDBName);
+
+        const course = await db.collection(COURSES)
+        .findOne({department: req.params.dept, course_num: req.params.num});
+
+        res.render("upload.ejs", {
+            course: course,
+            user: req.session.user,
+            currentPage: "upload"
+        });
+    } catch (error) {
+        req.flash('error', `Loading course from database error: ${error}`);
+        return res.redirect('/')
+    }
+})
 
 /**
  * Processes user submitted coursereview form (using POST) and stores review 
@@ -639,27 +644,12 @@ app.get("/bookmarks", requiresLogin, async (req, res) => {
     let username = req.session.user.username;
     let user = await db.collection(USERS).findOne({username: username});
     // changes strings to ObjectIds
-    let bookmarks = user.bookmarked.map(bookmark => new ObjectId(bookmark))
+    let bookmarks = user.bookmarked.map(bookmark => new ObjectId(bookmark));
     // finds courses that are in the user's bookmarked courses
     let results = await courses.find({_id: {$in: bookmarks}}).toArray();
 
     return res.render("bookmarks.ejs", {results: results, currentPage: "bookmarks"});
 });
-
-/**
- * Flashes error message and redirects to login page if user not logged in
- * @param {Request} req the request object
- * @param {Response} res the response object
- * @param {Function} next the next function to call if user is logged in
- */
-function requiresLogin(req, res, next) {
-    if (!req.session.loggedIn) {
-        req.flash('error', 'This page requires you to be logged in - please do so.');
-        return res.redirect("/login");
-    } else {
-        next();
-  } 
-}
 
 /**
  * Searches for course in the database
@@ -721,6 +711,21 @@ app.post('/saveAjax/:dept/:num/:act', async (req,res) => {
     const course = await boomark(req.params.dept, req.params.num, req.params.act, req.session.user.username);
     return res.json({course: course, act: req.params.act});
 });
+
+/**
+ * Flashes error message and redirects to login page if user not logged in
+ * @param {Request} req the request object
+ * @param {Response} res the response object
+ * @param {Function} next the next function to call if user is logged in
+ */
+function requiresLogin(req, res, next) {
+    if (!req.session.loggedIn) {
+        req.flash('error', 'This page requires you to be logged in - please do so.');
+        return res.redirect("/login");
+    } else {
+        next();
+  } 
+}
 
 /**
  * Extracts the user ID from an email address
