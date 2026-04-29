@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Course Insights</title>
+    <!-- loading Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- load local stylesheet (css) -->
+     <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <%- include("partials/flash.ejs") %>
+    <%- include("partials/navbar.ejs") %>
+    <div class="container">
+        <div id="bookmarked-classes-container" class="mt-5">
+            <% if (results.length === 0) { %>
+                <p class="text-center text-muted">No courses found matching your criteria.</p>
+            <% } else { %>
+                <div class="row">
+                    <% results.forEach((result) => { %>
+                        <div class="col-12 mb-3">
+                            <div class="card course-card shadow-sm position-relative">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-1">
+                                        <%= result.department %> <%= result.course_num %>
+                                    </h5>
+                                    <h6 class="card-subtitle mb-2">
+                                        <%= result.title %>
+                                    </h6>
+                                    <p class="card-text small mt-2 mb-0">
+                                        <b>Instructor(s):</b> <%= result.instructors.join("; ") %>
+                                    </p>
+                                    
+                                    <a href="/course/<%= result.department %>/<%= result.course_num %>" aria-label="View details for <%= result.department %> <%= result.course_num %>" class="stretched-link"></a>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <%- include("partials/bootstrap.ejs") %>
+</body>
+</html>
