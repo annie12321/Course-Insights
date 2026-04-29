@@ -69,7 +69,7 @@ $("#save-button").on("click", function () {
 
 /**
  * Response handler for bookmarking course.
- * @param {*} resp - response object, which includes course object and act, for
+ * @param {Response} resp - response object, which includes course object and act, for
  * action, which is save or unsave.
  */
 function processAction(resp) {
@@ -91,7 +91,6 @@ function processAction(resp) {
  * @param {string} act - save or unsave, depending on the action
  */
 function saveCourse(dept, num, act) {
-    // $.ajax("/likeAjax/"+tt, {method: 'POST', data: {tt: tt}, success: processAction});
     $.post("/saveAjax/"+dept+"/"+num+"/"+act, {dept: dept, num: num, act: act}).then(processAction);
 }
 
