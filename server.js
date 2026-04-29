@@ -646,7 +646,7 @@ function requiresLogin(req, res, next) {
  * @param {String} saved if the course needs to be saved
  * @returns a promise
  */
-async function boomark(department, course_num, saved) {
+async function boomark(department, course_num, saved, username) {
     try {
         const db = await Connection.open(mongoUri, myDBName);
         const course = await db.collection(COURSES).findOne(
@@ -655,26 +655,26 @@ async function boomark(department, course_num, saved) {
         // if want to bookmark
         if (saved === "save") {
             await db.collection(USERS).updateOne(
-                {username: this.session.user.username},
-                {$push: {bookmarked: course._id}},
-                {upsert: true}
+                {username: username},
+                {$addToSet: {bookmarked: course._id}},
+                {upsert: false}
             );
             await db.collection(COURSES).updateOne(
                 {_id: course._id},
-                {$push: {usersBookmarked: this.session.user.username}},
-                {upsert: true}
+                {$addToSet: {usersBookmarked: username}},
+                {upsert: false}
             );
         }
         // if want to un-bookmark
         else {
             await db.collection(USERS).updateOne(
-                {username: this.session.user.username},
+                {username: username},
                 {$pull: {bookmarked: course._id}},
                 {upsert: false}
             );
             await db.collection(COURSES).updateOne(
                 {_id: course._id},
-                {$pull: {usersBookmarked: this.session.user.username}},
+                {$pull: {usersBookmarked: username}},
                 {upsert: false}
             );
         }
@@ -686,7 +686,7 @@ async function boomark(department, course_num, saved) {
 }
 
 app.post('/saveAjax/:dept/:num/:act', async (req,res) => {
-    const success = await boomark(req.params.dept, req.params.num, req.params.act);
+    const success = await boomark(req.params.dept, req.params.num, req.params.act, req.session.user.username);
     return res.json({success: success});
 });
 
