@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Course Insights</title>
+    <title>Course Insights: Bookmarks</title>
     <!-- loading Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- load local stylesheet (css) -->
@@ -11,6 +11,8 @@
 <body>
     <%- include("partials/flash.ejs") %>
     <%- include("partials/navbar.ejs") %>
+
+    <h1>Bookmarked Courses</h1>
     <div class="container">
         <div id="bookmarked-classes-container" class="mt-5">
             <% if (results.length === 0) { %>
