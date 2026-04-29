@@ -66,10 +66,14 @@ $("#save-button").on("click", function () {
 
 // response handler
 function processAction(resp) {
-    console.log('response is ',resp);
-    if (resp.success) {
-        console.log("Saved/unsaved course "+resp.dept+resp.num);
-        $(`[data-course="${resp.dept} ${resp.num}"]`).toggleClass("fa-solid fa-regular");
+    console.log('response is ', resp);
+    const icon = $(`[data-course="${resp.course.department} ${resp.course.course_num}"]`);
+    console.log('icon has fa-bookmark class ', icon.hasClass("fa-bookmark"));
+
+    if (resp.act === "save") {
+        icon.removeClass("fa-regular").addClass("fa-solid");
+    } else {
+        icon.removeClass("fa-solid").addClass("fa-regular");
     }
 }
 
