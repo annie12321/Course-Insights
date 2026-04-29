@@ -620,6 +620,22 @@ app.get("/search/", requiresLogin, async (req, res) => {
     return res.render("index.ejs", {results: results, currentPage: "home"});
 });
 
+/**
+ * Finds bookmarked courses and renders the bookmarks page
+ * @param {Request} req the request object
+ * @param {Response} res the response object
+ */
+app.get("/bookmarks", requiresLogin, async (req, res) => {
+    const db = await Connection.open(mongoUri, myDBName);
+    const courses = db.collection(COURSES);
+
+    // changes strings to ObjectIds
+    let bookmarks = req.session.user.bookmarked.map(bookmark => new ObjectId(bookmark))
+    // finds courses that are in the user's bookmarked courses
+    let results = await courses.find({_id: {$in: bookmarks}}).toArray();
+
+    return res.render("bookmarks.ejs", {results: results, currentPage: "bookmarks"});
+});
 
 /**
  * Flashes error message and redirects to login page if user not logged in
