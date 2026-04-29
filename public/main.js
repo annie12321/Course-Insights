@@ -94,6 +94,15 @@ function saveCourse(dept, num, act) {
     $.post("/saveAjax/"+dept+"/"+num+"/"+act, {dept: dept, num: num, act: act}).then(processAction);
 }
 
+/**
+ * flashing messages disappear after 3 seconds
+ */
+setTimeout(() => {
+    $('.flash').fadeOut(600, function() {
+        $(this).remove();
+    });
+}, 3000);
+
 $("#login-ajax").click(loginAjax);
 
 console.log('main.js loaded');

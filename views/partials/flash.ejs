@@ -1,5 +1,5 @@
   <% if (messages.error) { %>
-  <div id="errors">
+  <div class="flash" id="errors">
     <% messages.error.forEach( msg => {%>
     <p><%= msg %></p>
     <% }) %>
@@ -7,7 +7,7 @@
   <% } %>
 
   <% if (messages.info) { %>
-  <div id="info">
+  <div class="flash" id="info">
     <% messages.info.forEach( msg => {%>
     <p><%= msg %></p>
     <% }) %>
