@@ -357,11 +357,18 @@ app.get("/course/:dept/:num", requiresLogin, async (req, res) => {
             .limit(1)
             .toArray();
 
+        // check if it's a saved course
+        let saved = false;
+        if (courseData.usersBookmarked.includes(req.session.user.username)) {
+            saved = true;
+        }
+
         res.render("course.ejs", {
             course: courseData,
             reviews: reviews,
             user: req.session.user,
             file: files[0],
+            saved: saved,
             currentPage: "course"
         });
     } catch (error) {

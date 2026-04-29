@@ -53,8 +53,8 @@ function getColor(username) {
                     </h5>
 
                     <button id="save-button" class="mb-3 btn btn-light">
-                        <i class="fa-regular fa-bookmark"
-                           data-course="<%= course.department %> <%= course.course_num %>"></i>
+                        <i class="<%= saved ? 'fa-solid' : 'fa-regular' %> fa-bookmark"
+                        data-course="<%= course.department %> <%= course.course_num %>"></i>
                     </button>
 
                     <p class="card-text mb-1">
