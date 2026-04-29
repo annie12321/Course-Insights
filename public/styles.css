@@ -5,7 +5,7 @@
     color: black;
 }
 
-.container, #course-container, #profile-container, #reviews-container, #login-container {
+.container, #course-container, #profile-container, #reviews-container, #bookmarked-classes-container, #login-container {
     padding: 30px;
 }
 
