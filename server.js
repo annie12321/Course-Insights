@@ -652,20 +652,22 @@ async function boomark(department, course_num, saved, username) {
         const course = await db.collection(COURSES).findOne(
             {department: department, course_num: course_num}
         );
-        // if want to bookmark
+        // if currently unsaved, add bookmark
         if (saved === "save") {
+            // adds course to user bookmarks
             await db.collection(USERS).updateOne(
                 {username: username},
                 {$addToSet: {bookmarked: course._id}},
                 {upsert: false}
             );
+            // adds user who bookmarked course to course
             await db.collection(COURSES).updateOne(
                 {_id: course._id},
                 {$addToSet: {usersBookmarked: username}},
                 {upsert: false}
             );
         }
-        // if want to un-bookmark
+        // if currently saved, remove bookmark
         else {
             await db.collection(USERS).updateOne(
                 {username: username},
@@ -685,6 +687,11 @@ async function boomark(department, course_num, saved, username) {
     }
 }
 
+/**
+ * Updates database and returns data for frontend handler
+ * @param {Request} req the request object
+ * @param {Response} res the response object
+ */
 app.post('/saveAjax/:dept/:num/:act', async (req,res) => {
     const course = await boomark(req.params.dept, req.params.num, req.params.act, req.session.user.username);
     return res.json({course: course, act: req.params.act});
