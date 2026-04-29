@@ -678,7 +678,7 @@ async function boomark(department, course_num, saved, username) {
                 {upsert: false}
             );
         }
-        return [course, act];
+        return course;
     }
     catch (error) {
         console.error(error);
@@ -686,8 +686,8 @@ async function boomark(department, course_num, saved, username) {
 }
 
 app.post('/saveAjax/:dept/:num/:act', async (req,res) => {
-    const [course, act] = await boomark(req.params.dept, req.params.num, req.params.act, req.session.user.username);
-    return res.json({course: course, act: act});
+    const course = await boomark(req.params.dept, req.params.num, req.params.act, req.session.user.username);
+    return res.json({course: course, act: req.params.act});
 });
 
 /**
