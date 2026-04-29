@@ -629,8 +629,10 @@ app.get("/bookmarks", requiresLogin, async (req, res) => {
     const db = await Connection.open(mongoUri, myDBName);
     const courses = db.collection(COURSES);
 
+    let username = req.session.user.username;
+    let user = await db.collection(USERS).findOne({username: username});
     // changes strings to ObjectIds
-    let bookmarks = req.session.user.bookmarked.map(bookmark => new ObjectId(bookmark))
+    let bookmarks = user.bookmarked.map(bookmark => new ObjectId(bookmark))
     // finds courses that are in the user's bookmarked courses
     let results = await courses.find({_id: {$in: bookmarks}}).toArray();
 
