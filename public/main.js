@@ -57,14 +57,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-$(".fa-bookmark").on('click', function (event) {
-    var course = $(this).attr("data-course");
-    var [dept, num] = course.split(" ");
-    if ($(".fa-bookmark").hasClass("fa-regular")) { // saving
-        act = "save";
-    } else { // un-saving
-        act = "unsave";
-    }
+$("#save-button").on("click", function () {
+    const icon = $(this).find(".fa-bookmark");
+    const [dept, num] = icon.data("course").split(" ");
+    const act = icon.hasClass("fa-regular") ? "save" : "unsave";
     saveCourse(dept, num, act);
 });
 
@@ -73,7 +69,7 @@ function processAction(resp) {
     console.log('response is ',resp);
     if (resp.success) {
         console.log("Saved/unsaved course "+resp.dept+resp.num);
-        $(`[data-course=${resp.dept} ${resp.num}]`).toggleClass("fa-solid fa-regular");
+        $(`[data-course="${resp.dept} ${resp.num}"]`).toggleClass("fa-solid fa-regular");
     }
 }
 
