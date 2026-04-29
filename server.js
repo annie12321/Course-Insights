@@ -636,6 +636,59 @@ function requiresLogin(req, res, next) {
   } 
 }
 
+/**
+ * Searches for course in the database
+ * Bookmarks the course if it has not been bookmarked
+ * by updating USERS and COURSES collections
+ * Un-bookmarks if it has been bookmarked
+ * @param {String} department the department
+ * @param {String} course_num  the course number
+ * @param {String} saved if the course needs to be saved
+ * @returns a promise
+ */
+async function boomark(department, course_num, saved) {
+    try {
+        const db = await Connection.open(mongoUri, myDBName);
+        const course = await db.collection(COURSES).findOne(
+            {department: department, course_num: course_num}
+        );
+        // if want to bookmark
+        if (saved === "save") {
+            await db.collection(USERS).updateOne(
+                {username: this.session.user.username},
+                {$push: {bookmarked: course._id}},
+                {upsert: true}
+            );
+            await db.collection(COURSES).updateOne(
+                {_id: course._id},
+                {$push: {usersBookmarked: this.session.user.username}},
+                {upsert: true}
+            );
+        }
+        // if want to un-bookmark
+        else {
+            await db.collection(USERS).updateOne(
+                {username: this.session.user.username},
+                {$pull: {bookmarked: course._id}},
+                {upsert: false}
+            );
+            await db.collection(COURSES).updateOne(
+                {_id: course._id},
+                {$pull: {usersBookmarked: this.session.user.username}},
+                {upsert: false}
+            );
+        }
+        return true;
+    }
+    catch (error) {
+        return false;
+    }
+}
+
+app.post('/saveAjax/:dept/:num/:act', async (req,res) => {
+    const success = await boomark(req.params.dept, req.params.num, req.params.act);
+    return res.json({success: success});
+});
 
 /**
  * Extracts the user ID from an email address
