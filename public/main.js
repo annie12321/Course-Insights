@@ -57,6 +57,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+/**
+ * Event handler for clicking on bookmark button on course page.
+ */
 $("#save-button").on("click", function () {
     const icon = $(this).find(".fa-bookmark");
     const [dept, num] = icon.data("course").split(" ");
@@ -64,7 +67,11 @@ $("#save-button").on("click", function () {
     saveCourse(dept, num, act);
 });
 
-// response handler
+/**
+ * Response handler for bookmarking course.
+ * @param {*} resp - response object, which includes course object and act, for
+ * action, which is save or unsave.
+ */
 function processAction(resp) {
     console.log('response is ', resp);
     const icon = $(`[data-course="${resp.course.department} ${resp.course.course_num}"]`);
@@ -77,7 +84,12 @@ function processAction(resp) {
     }
 }
 
-// functions to save class with ajax
+/**
+ * Function to save course with ajax. 
+ * @param {string} dept - course department
+ * @param {string} num - course number
+ * @param {string} act - save or unsave, depending on the action
+ */
 function saveCourse(dept, num, act) {
     // $.ajax("/likeAjax/"+tt, {method: 'POST', data: {tt: tt}, success: processAction});
     $.post("/saveAjax/"+dept+"/"+num+"/"+act, {dept: dept, num: num, act: act}).then(processAction);
