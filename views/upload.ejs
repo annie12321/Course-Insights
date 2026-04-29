@@ -9,67 +9,82 @@
     <link rel="stylesheet" href="/styles.css">
     </head>
 <body>
-    <%- include("partials/navbar.ejs") %>
+<%- include("partials/navbar.ejs") %>
+    <div class="container d-flex justify-content-center">
+        <div class="card shadow-sm upload-card">
+            <div class="card-body">
+                <h3 class="card-title mb-3">Upload Review</h3>
 
-    <div class="upload-container">
-        <h1>Upload Review</h1>
-        
-        <form action="/upload/<%= course.department%>/<%= course.course_num %>" method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <p>Course: <%= course.searchTerm %></p>
-            </div>
-
-            <div class="form-group">
-                <label for="hours-per-week">
-                    Average hours per week: <span id="hoursValue">10</span>
-                </label>
-                <input type="range" id="hours-per-week" name="hoursPerWeek" min="0" max="30" value="10" step="1">
-            </div>
-
-            <div class="form-group">
-                <label for="difficulty">
-                    Difficulty: <span id="difficultyValue">3</span>
-                </label>
-                <input type="range" id="difficulty" name="difficulty" min="1" max="5" value="3" step="0.1">
-            </div>
-
-            <div class="form-group">
-                <fieldset>
-                    <legend>Would take this class again?</legend>
-                    <input type="radio" id="retake-yes" name="yes-no" value="yes">
-                    <label for="retake-yes">Yes</label><br>
-                    <input type="radio" id="retake-no" name="yes-no" value="no" checked>
-                    <label for="retake-no">No</label><br>
-                </fieldset>
-            </div>
-
-            <div class="form-group">
-                <label for="tags">Tags</label>
-                <select name="tag" id="tags" multiple size="1">
-                    <option value="easyA">Easy A</option>
-                    <option value="discussion">Discussion-based</option>
-                    <option value="flipped">Flipped classroom</option>
-                    <option value="300">300-level</option>
-                    <option value="reading">Reading heavy</option>
-                    <option value="tests">No tests</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="comments">Comments</label>
-                <textarea id="comments" name="comments" class="form-control" rows="4" 
-                    placeholder="Write your comments here..." required></textarea>
-            </div>
-
-            <div class="file-upload">
-                <p>
-                    <label>Syllabus Upload
-                        <input type="file" accept="application/pdf" name="syllabus" >
-                    </label>
+                <p class="text-muted mb-4">
+                    <b>Course:</b> <%= course.searchTerm %>
                 </p>
+
+                <form action="/upload/<%= course.department%>/<%= course.course_num %>" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>
+                            Average hours/week: <b id="hoursValue">10</b>
+                        </label>
+                        <input type="range" class="custom-range"
+                            id="hours-per-week" name="hoursPerWeek"
+                            min="0" max="30" value="10" step="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            Difficulty: <b id="difficultyValue">3</b>
+                        </label>
+                        <input type="range" class="custom-range"
+                            id="difficulty" name="difficulty"
+                            min="1" max="5" value="3" step="0.1">
+                    </div>
+
+                    <div class="form-group">
+                        <label><b>Would take again?</b></label>
+                        <div class="d-flex">
+                            <div class="mr-3">
+                                <input type="radio" id="retake-yes" name="yes-no" value="yes">
+                                <label for="retake-yes">Yes</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="retake-no" name="yes-no" value="no" checked>
+                                <label for="retake-no">No</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><b>Tags</b></label>
+                        <select name="tag" id="tags" class="form-control">
+                            <option value="easyA">Easy A</option>
+                            <option value="discussion">Discussion-based</option>
+                            <option value="flipped">Flipped classroom</option>
+                            <option value="300">300-level</option>
+                            <option value="reading">Reading heavy</option>
+                            <option value="tests">No tests</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label><b>Comments</b></label>
+                        <textarea id="comments" name="comments"
+                            class="form-control"
+                            rows="4"
+                            placeholder="Write your experience, tips, workload, etc..."
+                            required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label><b>Syllabus (optional)</b></label>
+                        <input type="file" class="form-control-file"
+                            accept="application/pdf" name="syllabus">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block mt-3">
+                        Submit Review
+                    </button>
+                </form>
             </div>
-            <button type="submit" class="btn btn-primary">Submit Review</button>
-        </form>
+        </div>
     </div>
 
     <%- include("partials/bootstrap.ejs") %>
