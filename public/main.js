@@ -57,6 +57,32 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+$(".fa-bookmark").on('click', function (event) {
+    var course = $(this).attr("data-course");
+    var [dept, num] = course.split(" ");
+    if ($(".fa-bookmark").hasClass("fa-regular")) { // saving
+        act = "save";
+    } else { // un-saving
+        act = "unsave";
+    }
+    saveCourse(dept, num, act);
+});
+
+// response handler
+function processAction(resp) {
+    console.log('response is ',resp);
+    if (resp.success) {
+        console.log("Saved/unsaved course "+resp.dept+resp.num);
+        $(`[data-course=${resp.dept} ${resp.num}]`).toggleClass("fa-solid fa-regular");
+    }
+}
+
+// functions to save class with ajax
+function saveCourse(dept, num, act) {
+    // $.ajax("/likeAjax/"+tt, {method: 'POST', data: {tt: tt}, success: processAction});
+    $.post("/saveAjax/"+dept+"/"+num+"/"+act, {dept: dept, num: num, act: act}).then(processAction);
+}
+
 $("#login-ajax").click(loginAjax);
 
 console.log('main.js loaded');
