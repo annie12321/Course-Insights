@@ -98,10 +98,10 @@ function saveCourse(dept, num, act) {
  * flashing messages disappear after 3 seconds
  */
 setTimeout(() => {
-    $('.flash').fadeOut(600, function() {
+    $('.alert').fadeOut(600, function() {
         $(this).remove();
     });
-}, 3000);
+}, 4000);
 
 $("#login-ajax").click(loginAjax);
 

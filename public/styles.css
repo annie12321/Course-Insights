@@ -202,7 +202,7 @@ legend {
 }
 
 /* flashing */
-.flash {
+.alert {
     position: absolute;
     top: 20px;
     left: 50%;
@@ -223,16 +223,4 @@ legend {
 @keyframes slideIn {
     from { opacity: 0; transform: translate(-50%, -20px); }
     to { opacity: 1; transform: translate(-50%, 0); }
-}
-
-#errors {
-    background-color: #f5e5e7;
-    color: #721c24;
-    border: 1px solid #f5e5e7;
-}
-
-#info {
-    background-color: #e4f6e8;
-    color: #155724;
-    border: 1px solid #e4f6e8;
 }
