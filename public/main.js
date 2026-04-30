@@ -95,7 +95,7 @@ function saveCourse(dept, num, act) {
 }
 
 /**
- * flashing messages disappear after 3 seconds
+ * flashing messages disappear after 4 seconds
  */
 setTimeout(() => {
     $('.alert').fadeOut(600, function() {
