@@ -188,6 +188,19 @@ legend {
     transform: translateY(-1px);
 }
 
+/* login and register */
+#login {
+    margin-bottom: 10px;
+}
+
+#register {
+    margin-bottom: 10px;
+}
+
+.link {
+    color: blue;
+}
+
 /* flashing */
 .flash {
     padding: 8px 20px;
