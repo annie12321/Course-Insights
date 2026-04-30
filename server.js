@@ -175,7 +175,8 @@ app.post("/register", async (req, res) => {
             username: username,
             hash: hash,
             role: "student",
-            class_year: req.body.year
+            class_year: req.body.year,
+            bookmarked: []
         };
         await db.collection(USERS).insertOne(newUser);
         console.log('successfully joined', username);
@@ -634,6 +635,7 @@ app.get("/search/", requiresLogin, async (req, res) => {
 
 /**
  * Finds bookmarked courses and renders the bookmarks page
+ * Requires user to be logged in
  * @param {Request} req the request object
  * @param {Response} res the response object
  */
@@ -707,7 +709,7 @@ async function boomark(department, course_num, saved, username) {
  * @param {Request} req the request object
  * @param {Response} res the response object
  */
-app.post('/saveAjax/:dept/:num/:act', async (req,res) => {
+app.post('/saveAjax/:dept/:num/:act', requiresLogin, async (req,res) => {
     const course = await boomark(req.params.dept, req.params.num, req.params.act, req.session.user.username);
     return res.json({course: course, act: req.params.act});
 });
