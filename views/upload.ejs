@@ -14,7 +14,7 @@
     <div class="container d-flex justify-content-center">
         <div class="card shadow-sm upload-card">
             <div class="card-body">
-                <h3 class="card-title mb-3">Upload Review</h3>
+                <h1 class="card-title mb-3">Upload Review</h1>
 
                 <p class="text-muted mb-4">
                     <b>Course:</b> <%= course.searchTerm %>
@@ -22,7 +22,7 @@
 
                 <form action="/upload/<%= course.department%>/<%= course.course_num %>" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label>
+                        <label for="hours-per-week">
                             Average hours/week: <b id="hoursValue">10</b>
                         </label>
                         <input type="range" class="custom-range"
@@ -31,7 +31,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>
+                        <label for="difficulty">
                             Difficulty: <b id="difficultyValue">3</b>
                         </label>
                         <input type="range" class="custom-range"
@@ -40,21 +40,23 @@
                     </div>
 
                     <div class="form-group">
-                        <label><b>Would take again?</b></label>
                         <div class="d-flex">
-                            <div class="mr-3">
-                                <input type="radio" id="retake-yes" name="yes-no" value="yes">
-                                <label for="retake-yes">Yes</label>
-                            </div>
-                            <div>
-                                <input type="radio" id="retake-no" name="yes-no" value="no" checked>
-                                <label for="retake-no">No</label>
-                            </div>
+                            <fieldset>
+                                <legend><b>Would take again?</b></legend>
+                                <div class="mr-3">
+                                    <input type="radio" id="retake-yes" name="yes-no" value="yes">
+                                    <label for="retake-yes">Yes</label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="retake-no" name="yes-no" value="no" checked>
+                                    <label for="retake-no">No</label>
+                                </div>
+                            </fieldset>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label><b>Tags</b></label>
+                        <label for="tags"><b>Tags</b></label>
                         <select name="tag" id="tags" multiple size="1" class="form-control">
                             <option value="easyA">Easy A</option>
                             <option value="discussion">Discussion-based</option>
@@ -66,7 +68,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label><b>Comments</b></label>
+                        <label for="comments"><b>Comments</b></label>
                         <textarea id="comments" name="comments"
                             class="form-control"
                             rows="4"
@@ -75,8 +77,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label><b>Syllabus (optional)</b></label>
-                        <input type="file" class="form-control-file"
+                        <label for="syllabus"><b>Syllabus (optional)</b></label>
+                        <input id="syllabus" type="file" class="form-control-file"
                             accept="application/pdf" name="syllabus">
                     </div>
 

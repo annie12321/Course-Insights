@@ -45,15 +45,15 @@ function getColor(username) {
             <div class="card course-card shadow-sm mb-4">
                 <div class="card-body">
 
-                    <h3 class="card-title mb-2">
+                    <h1 class="card-title mb-2">
                         <%= course.department %> <%= course.course_num %>
-                    </h3>
+                    </h1>
 
-                    <h5 class="card-subtitle mb-3 text-muted">
+                    <h2 class="card-subtitle mb-3 text-muted">
                         <%= course.title %>
-                    </h5>
+                    </h2>
 
-                    <button id="save-button" class="mb-3 btn btn-light">
+                    <button id="save-button" class="mb-3 btn btn-light" aria-label="<%= saved ? 'Remove from bookmarks' : 'Add to bookmarks' %>">
                         <i class="<%= saved ? 'fa-solid' : 'fa-regular' %> fa-bookmark"
                         data-course="<%= course.department %> <%= course.course_num %>"></i>
                     </button>
@@ -94,7 +94,7 @@ function getColor(username) {
             <% if (file != null) { %>
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
-                    <h5 class="card-title">Syllabus</h5>
+                    <h1 class="card-title">Syllabus</h1>
                     <iframe class="uploadedSyllabus" src="<%= file.path %>"></iframe>
                 </div>
             </div>
@@ -105,7 +105,7 @@ function getColor(username) {
 
         <div class="col-md-6 d-flex flex-column">
 
-            <h4 class="mb-3">Student Reviews</h4>
+            <h1  class="mb-3 student-reviews">Student Reviews</h1>
 
             <div class="reviews-scroll">
                 <% if (reviews.length === 0) { %>
@@ -130,7 +130,7 @@ function getColor(username) {
                                 <p class="card-text small mb-1">
                                     <b>Would take again:</b> <%= r.retake ? "Yes" : "No" %>
                                 </p>
-                                <p class="card-text small mb-2">
+                                <p class="card-text tag-size mb-2">
                                     <b>Tags:</b>
                                     <% if (r.tags.length > 0) { %>
                                         <% r.tags.forEach(tag => { %>
