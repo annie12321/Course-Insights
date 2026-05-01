@@ -49,9 +49,9 @@ function getColor(username) {
                         <%= course.department %> <%= course.course_num %>
                     </h1>
 
-                    <h2 class="card-subtitle mb-3 text-muted">
-                        <%= course.title %>
-                    </h2>
+                    <p class="card-subtitle mb-3 text-muted">
+                        <b><%= course.title %></b>
+                    </p>
 
                     <button id="save-button" class="mb-3 btn btn-light" aria-label="<%= saved ? 'Remove from bookmarks' : 'Add to bookmarks' %>">
                         <i class="<%= saved ? 'fa-solid' : 'fa-regular' %> fa-bookmark"
@@ -94,7 +94,7 @@ function getColor(username) {
             <% if (file != null) { %>
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
-                    <h1 class="card-title">Syllabus</h1>
+                    <h2 class="card-title">Syllabus</h2>
                     <iframe class="uploadedSyllabus" src="<%= file.path %>"></iframe>
                 </div>
             </div>
@@ -105,7 +105,7 @@ function getColor(username) {
 
         <div class="col-md-6 d-flex flex-column">
 
-            <h1  class="mb-3 student-reviews">Student Reviews</h1>
+            <h2  class="mb-3 student-reviews">Student Reviews</h2>
 
             <div class="reviews-scroll">
                 <% if (reviews.length === 0) { %>

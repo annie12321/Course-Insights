@@ -50,14 +50,14 @@
             <div class="vertical-divider"></div>
 
             <div class="col-md-6">
-                <h1 class="mb-3 student-reviews">Your Reviews</h1>
+                <h2 class="mb-3 student-reviews">Your Reviews</h2>
                 <% if (reviews && reviews.length > 0) { %>
                     <% reviews.forEach(function(r) { %>
                         <div class="card course-card shadow-sm mb-3">
                             <div class="card-body">
-                                <h2 class="card-title mb-1">
+                                <h3 class="card-title mb-1">
                                     <%= r.department %> <%= r.course_num %>
-                                </h2>
+                                </h3>
                                 <p class="card-text small mb-1">
                                     <b>Hours per Week:</b> <%= r.hours %> |
                                     <b>Difficulty:</b> <%= r.difficulty %>

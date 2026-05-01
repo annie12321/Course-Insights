@@ -6,7 +6,7 @@
     <!-- loading Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- loading Pixelfy Sans font -->
-    <link href='https://fonts.googleapis.com/css?family=Pixelify Sans' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Pixelify+Sans' rel='stylesheet'>
     <!-- load local stylesheet (css) -->
     <link rel="stylesheet" href="/styles.css">
 </head>
@@ -14,14 +14,8 @@
     <main class="auth-container container-fluid vh-100">
         <%- include("partials/flash.ejs") %>
         <div class="row h-100 g-0">
-           <section class="col-sm-6 d-none d-sm-flex flex-column align-items-center justify-content-center border-end">
-                <div class="text-center">
-                    <img src="logo.jpg" alt="logo of hamster reading book" class="img-fluid logo">
-                    <h1 class="fw-bold logo-title">Course Insights</h1>
-                </div>
-            </section>
-            <div class="vertical-divider"></div>
-            <section class="col-sm-6 text-black d-flex align-items-center justify-content-center">
+            <%- include("partials/splash.ejs") %>
+            <div class="col-sm-6 text-black d-flex align-items-center justify-content-center">
                 <div class="px-5 w-100">
                     <h1 id="register">Create an Account</h1>
                     <form action="/register" method="POST" class="register-form">
@@ -63,7 +57,7 @@
                     
                     <p class="text-muted">Already have an account? <a class="link" href="/login"><u>Login here</u></a>.</p>
                 </div>
-            </section>
+            </div>
         </div>
     </main>
     <%- include("partials/bootstrap.ejs") %>
