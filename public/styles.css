@@ -201,6 +201,16 @@ legend {
     color: blue;
 }
 
+.logo {
+    max-height: 100%;
+    object-fit: contain;
+    width: 600px;
+}
+
+.logo-title {
+    font-family: 'Pixelify Sans';
+}
+
 /* flashing */
 .alert {
     position: absolute;
