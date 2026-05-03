@@ -12,6 +12,7 @@ const flash = require('express-flash');
 const cookieSession = require('cookie-session');
 const serveStatic = require('serve-static');
 const multer = require('multer');
+const fs = require('fs').promises;
 const { ObjectId } = require('mongodb');
 
 // our modules loaded from cwd
@@ -357,7 +358,15 @@ app.get("/course/:dept/:num", requiresLogin, async (req, res) => {
             .sort({submittedAt: -1})
             .limit(1)
             .toArray();
-
+        
+        // makes sure file is in uploads folder
+        let fileSaved = true;
+        try {
+            await fs.access("."+files[0].path);
+        } catch (err) {
+            fileSaved = false;
+        }
+        
         // check if it's a saved course
         let saved = false;
         if (courseData.usersBookmarked.includes(req.session.user.username)) {
@@ -369,6 +378,7 @@ app.get("/course/:dept/:num", requiresLogin, async (req, res) => {
             reviews: reviews,
             user: req.session.user,
             file: files[0],
+            fileSaved: fileSaved,
             saved: saved,
             currentPage: "course"
         });
