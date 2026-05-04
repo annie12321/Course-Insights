@@ -373,6 +373,11 @@ app.get("/course/:dept/:num", requiresLogin, async (req, res) => {
             saved = true;
         }
 
+        // checks if already uploaded a review
+        let userReviews = await db.collection(REVIEWS).find({
+            username: req.session.user.username, course_num: num, department: dept
+        }).toArray();
+
         res.render("course.ejs", {
             course: courseData,
             reviews: reviews,
@@ -380,6 +385,7 @@ app.get("/course/:dept/:num", requiresLogin, async (req, res) => {
             file: files[0],
             fileSaved: fileSaved,
             saved: saved,
+            reviewID: userReviews[0] || null,
             currentPage: "course"
         });
     } catch (error) {

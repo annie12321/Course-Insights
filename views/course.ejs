@@ -84,11 +84,17 @@ function getColor(username) {
                             <span class="text-muted small">No tags</span>
                         <% } %>
                     </p>
-                    <a href="/upload/<%= course.department %>/<%= course.course_num %>"
-                       class="btn btn-primary btn-sm mt-2">
-                        Upload Review
-                    </a>
-
+                     <% if (reviewID) { %>
+                        <a href="/update/<%=reviewID._id.toString()%>"
+                        class="btn btn-primary btn-sm mt-2">
+                            Update Review
+                        </a>
+                    <% } else {%>
+                        <a href="/upload/<%= course.department %>/<%= course.course_num %>"
+                        class="btn btn-primary btn-sm mt-2">
+                            Upload Review
+                        </a>
+                    <% } %>
                 </div>
             </div>
             <% if (file != null && fileSaved) { %>
