@@ -212,6 +212,13 @@ legend {
     font-size: 40px;
 }
 
+.logo-index {
+    max-width: 40%;   
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
 .admin-title {
     font-size: 36px;
     font-weight: 800;
