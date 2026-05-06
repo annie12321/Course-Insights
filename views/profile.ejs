@@ -21,86 +21,104 @@
     };
     %>
 
-    <div id="profile-container" class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card shadow-sm mb-4">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="profile-avatar mr-3">
-                                <%= user.username.charAt(0).toUpperCase() %>
+    <div id="profile-container" class="container profile-page">
+        <div class="row profile-layout">
+
+            <div class="col-md-5 profile-left">
+                <div class="profile-center">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="profile-avatar mr-3">
+                                    <%= user.username.charAt(0).toUpperCase() %>
+                                </div>
+                                <h1 class="card-title mb-0">
+                                    <%= user.username %>'s Profile
+                                </h1>
                             </div>
-                            <h1 class="card-title mb-0">
-                                <%= user.username %>'s Profile
-                            </h1>
+
+                            <p class="card-text mb-1">
+                                <b>Role:</b> <%= user.role %>
+                            </p>
+                            <p class="card-text mb-1">
+                                <b>Email:</b> <%= user.email %>
+                            </p>
+                            <p class="card-text mb-0">
+                                <b>Class Year:</b> <%= user.class_year %>
+                            </p>
+
+                            <% if (user.username === "annie" || user.username === "foodlover") { %>
+                                <a href="/admin" class="btn btn-danger btn-sm mt-3">
+                                    Admin Panel
+                                </a>
+                            <% } %>
+
                         </div>
-                        <p class="card-text mb-1">
-                            <b>Role:</b> <%= user.role %>
-                        </p>
-                        <p class="card-text mb-1">
-                            <b>Email:</b> <%= user.email %>
-                        </p>
-                        <p class="card-text mb-0">
-                            <b>Class Year:</b> <%= user.class_year %>
-                        </p>
-                        <% if (user.username === "annie" || user.username === "foodlover") { %>
-                            <a href="/admin" class="btn btn-danger btn-sm mt-3">
-                                Admin Panel
-                            </a>
-                        <%  } %>
                     </div>
                 </div>
             </div>
 
-            <div class="vertical-divider"></div>
+            <div class="col-md-7 profile-right">
 
-            <div class="col-md-6">
-                <h2 class="mb-3 student-reviews">Your Reviews</h2>
-                <% if (reviews && reviews.length > 0) { %>
-                    <% reviews.forEach(function(r) { %>
-                        <div class="card course-card shadow-sm mb-3">
-                            <div class="card-body">
-                                <h3 class="card-title mb-1">
-                                    <a href="/course/<%= r.department %>/<%= r.course_num %>"
-                                    class="text-decoration-none">
-                                        <%= r.department %> <%= r.course_num %>
+                <h2 class="reviews-title">Your Reviews</h2>
+
+                <div class="reviews-scroll">
+                    <% if (reviews && reviews.length > 0) { %>
+                        <% reviews.forEach(function(r) { %>
+
+                            <div class="card course-card shadow-sm mb-3">
+                                <div class="card-body">
+
+                                    <h3 class="card-title mb-1">
+                                        <a href="/course/<%= r.department %>/<%= r.course_num %>">
+                                            <%= r.department %> <%= r.course_num %>
+                                        </a>
+                                    </h3>
+
+                                    <p class="card-text small mb-1">
+                                        <b>Hours:</b> <%= r.hours %> |
+                                        <b>Difficulty:</b> <%= r.difficulty %>
+                                    </p>
+
+                                    <p class="card-text small mb-1">
+                                        <b>Retake:</b> <%= r.retake ? "Yes" : "No" %>
+                                    </p>
+
+                                    <p class="card-text tag-size mb-2">
+                                        <b>Tags:</b>
+                                        <% if (r.tags.length > 0) { %>
+                                            <% r.tags.forEach(tag => { %>
+                                                <% const t = tagMap[tag]; %>
+                                                <% if (t) { %>
+                                                    <span class="badge badge-pill <%= t.class %> mr-1">
+                                                        <%= t.label %>
+                                                    </span>
+                                                <% } %>
+                                            <% }) %>
+                                        <% } else { %>
+                                            <span class="text-muted small">No tags</span>
+                                        <% } %>
+                                    </p>
+
+                                    <p class="card-text small mb-2">
+                                        <b>Comments:</b> <%= r.comments %>
+                                    </p>
+
+                                    <a href="/update/<%= r._id %>" class="btn btn-primary btn-sm">
+                                        Update Review
                                     </a>
-                                </h3>
-                                <p class="card-text small mb-1">
-                                    <b>Hours per Week:</b> <%= r.hours %> |
-                                    <b>Difficulty:</b> <%= r.difficulty %>
-                                </p>
-                                <p class="card-text small mb-1">
-                                    <b>Would take again:</b> <%= r.retake ? "Yes" : "No" %>
-                                </p>
-                                <p class="card-text tag-size mb-2">
-                                    <b>Tags:</b>
-                                    <% if (r.tags.length > 0) { %>
-                                        <% r.tags.forEach(tag => { %>
-                                            <% const t = tagMap[tag]; %>
-                                            <% if (t) { %>
-                                                <span class="badge badge-pill <%= t.class %> mr-1">
-                                                    <%= t.label %>
-                                                </span>
-                                            <% } %>
-                                        <% }) %>
-                                    <% } else { %>
-                                        <span class="text-muted small">No tags</span>
-                                    <% } %>
-                                </p>
-                                <p class="card-text small mb-2">
-                                    <b>Comments:</b> <%= r.comments %>
-                                </p>
-                                <a href="/update/<%= r._id %>" class="btn btn-primary btn-sm">
-                                    Update Review
-                                </a>
+
+                                </div>
                             </div>
-                        </div>
-                    <% }) %>
-                <% } else { %>
-                    <p class="text-muted">No reviews yet.</p>
-                <% } %>
+
+                        <% }) %>
+                    <% } else { %>
+                        <p class="text-muted">No reviews yet.</p>
+                    <% } %>
+                </div>
             </div>
+
         </div>
     </div>
     <%- include("partials/bootstrap.ejs") %>

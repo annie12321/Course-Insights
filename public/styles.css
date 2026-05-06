@@ -1,17 +1,42 @@
-/* Annie Chen and Emily Zhu */
+:root {
+    /* theme */
+    --orange: #E88B3E;
+    --dark-blue: #3B426B;
+    --green: #7CB537;
+    --pink: #f7c3cb;
 
-.container, #course-container, #profile-container, #reviews-container, #bookmarked-classes-container, #login-container {
+    /* derived neutrals */
+    --darker-blue: #101740;
+    --text-dark: #2b2b2b;
+    --border-light: #e0e0e0;
+    --bg-light: #f7f7f7;
+}
+
+/* layout containers */
+.container,
+#course-container,
+#profile-container,
+#reviews-container,
+#bookmarked-classes-container,
+#login-container {
     padding: 30px;
+}
+
+.student-reviews {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--darker-blue);
+    margin-bottom: 12px;
 }
 
 #search-container {
     display: flex;
-    align-items: center; 
+    align-items: center;
     justify-content: center;
 }
 
 #search-results-container {
-    max-width: 1000px;  
+    max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -21,7 +46,7 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -30,7 +55,7 @@
     font-size: 20px;
 
     color: white;
-    background-color: #6c5b7b; 
+    background-color: var(--dark-blue);
 
     text-transform: uppercase;
 }
@@ -41,21 +66,21 @@
     bottom: 15%;
     left: 50%;
     width: 1px;
-    background-color: #e0e0e0;
+    background-color: var(--border-light);
 }
 
-/* course list */
+/* course card */
 .course-card {
-    border: 1px solid #e0e0e0;
+    border: 2px solid var(--border-light);
     border-radius: 10px;
     transition: all 0.2s ease-in-out;
-    cursor: pointer; 
-    color: #4a4a4a;
+    cursor: pointer;
+    color: var(--text-dark);
 }
 
 .course-card:hover {
-    border-color: #f5e1ef; 
-    background-color: #fdf1f4; 
+    border-color: var(--darker-blue);
+    background-color: rgba(232, 139, 62, 0.08);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
 }
@@ -63,7 +88,11 @@
 .card-title {
     font-weight: 700;
     font-size: 20px;
-    color: #6c5b7b;
+    color: var(--dark-blue);
+}
+
+.card-subtitle {
+    font-size: 16px;
 }
 
 .tag-size {
@@ -74,56 +103,53 @@
     font-size: 24px;
 }
 
-.card-subtitle {
-    font-size: 16px;
-}
-
 .stretched-link::after {
     z-index: 1;
 }
 
+/* buttons */
 .btn-primary {
-    border-color: #000000; 
-    background-color: #59003e;
+    background-color: var(--dark-blue);
+    border: 2px solid var(--dark-blue);
+    color: white;
+    transition: all 0.2s ease;
 }
 
-.uploadedSyllabus {
-    width: 100%;
-    height: 600px;
+.btn-primary:hover {
+    background-color: #2f365a;
+    background-color: var(--darker-blue);
+    border-color: var(--darker-blue);
 }
 
-legend {
-    font-size: medium;
-}
-
+/* badges */
 .badge-light {
-    background-color: #f5e1ef;
-    color: #59003e;
-    border: 1px solid #e0c3d9;
+    background-color: rgba(232, 139, 62, 0.15);
+    color: var(--dark-blue);
+    border: 1px solid var(--orange);
 }
 
 .badge-light:hover {
-    background-color: #fdf1f4;
+    background-color: rgba(232, 139, 62, 0.25);
 }
 
 .badge-success {
-    background-color: #d4edda;
-    color: #2e6f40;
+    background-color: rgba(124, 181, 55, 0.2);
+    color: #2f5d1a;
 }
 
 .badge-info {
-    background-color: #e3f2fd;
-    color: #2a5d84;
+    background-color: rgba(59, 66, 107, 0.15);
+    color: var(--dark-blue);
 }
 
 .badge-primary {
-    background-color: #e9ddf2;
-    color: #5c3d7a;
+    background-color: rgba(232, 139, 62, 0.15);
+    color: var(--dark-blue);
 }
 
 .badge-warning {
-    background-color: #fff3cd;
-    color: #856404;
+    background-color: rgba(232, 139, 62, 0.25);
+    color: #7a4a1f;
 }
 
 .badge-dark {
@@ -132,18 +158,18 @@ legend {
 }
 
 .badge-secondary {
-    background-color: #f5e1ef;
-    color: #59003e;
+    background-color: rgba(59, 66, 107, 0.1);
+    color: var(--darker-blue);
 }
 
-/* navbar */
+/* nav bar */
 .custom-navbar-color {
-    background-color: #f5e1ef;
+    background-color: var(--pink);
     padding: 0.8rem 1.5rem;
 }
 
 .nav-link {
-    color: black !important;
+    color: var(--darker-blue) !important;
     margin-left: 15px;
     position: relative;
     transition: all 0.25s ease;
@@ -151,7 +177,7 @@ legend {
 
 .nav-link:hover {
     transform: translateY(-1px);
-     color: black !important;
+    color: black !important;
 }
 
 .nav-link::after {
@@ -160,15 +186,12 @@ legend {
     width: 0%;
     height: 2px;
     bottom: -3px;
-    background-color: black;
+    background-color: var(--orange);
     left: 0;
     transition: width 0.25s ease;
 }
 
-.nav-link:hover::after {
-    width: 100%;
-}
-
+.nav-link:hover::after,
 .nav-item.active .nav-link::after {
     width: 100%;
 }
@@ -188,17 +211,14 @@ legend {
     transform: translateY(-1px);
 }
 
-/* login and register */
-#login {
-    margin-bottom: 10px;
-}
-
+/* login/register */
+#login,
 #register {
     margin-bottom: 10px;
 }
 
 .link {
-    color: blue;
+    color: var(--dark-blue);
 }
 
 .logo {
@@ -213,7 +233,7 @@ legend {
 }
 
 .logo-index {
-    max-width: 40%;   
+    max-width: 40%;
     height: auto;
     display: block;
     margin: 0 auto;
@@ -222,11 +242,11 @@ legend {
 .admin-title {
     font-size: 36px;
     font-weight: 800;
-    color: #2b2b2b;
+    color: var(--text-dark);
     letter-spacing: -0.5px;
 }
 
-/* flashing */
+/* alerts */
 .alert {
     position: absolute;
     top: 20px;
@@ -245,7 +265,96 @@ legend {
     animation: slideIn 0.5s ease-out;
 }
 
+.bookmarks-wrapper {
+    max-width: 750px;   
+    margin: 0 auto;     
+    padding-top: 30px;
+}
+
+.bookmarks-wrapper h1 {
+    font-weight: 700;
+    color: var(--dark-blue);
+}
+
 @keyframes slideIn {
-    from { opacity: 0; transform: translate(-50%, -20px); }
-    to { opacity: 1; transform: translate(-50%, 0); }
+    from {
+        opacity: 0;
+        transform: translate(-50%, -20px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+/* profile */
+.profile-page {
+    height: calc(100vh - 70px); 
+    overflow: hidden; 
+}
+
+.profile-layout {
+    height: 100%;
+}
+
+.profile-left {
+    display: flex;
+    align-items: center;    
+    justify-content: center;  
+}
+
+.profile-center {
+    width: 100%;
+    max-width: 400px;
+}
+
+.profile-right {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding-left: 10px;
+}
+
+.reviews-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--darker-blue);
+    margin-bottom: 10px;
+}
+
+.reviews-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 8px;
+    scrollbar-width: thin;
+}
+
+.reviews-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.reviews-scroll::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+}
+
+/* restore heading styling */
+.student-reviews {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--darker-blue);
+    margin-bottom: 12px;
+}
+
+.uploadedSyllabus {
+    width: 100%;
+    height: 600px;
+}
+
+legend {
+    font-size: medium;
+}
+
+.badge-size {
+    font-size: 15px;
 }
