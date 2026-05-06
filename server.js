@@ -731,6 +731,50 @@ app.post('/saveAjax/:dept/:num/:act', requiresLogin, async (req,res) => {
 });
 
 /**
+ * Finds all users and renders the admin page
+ * Requires user to be a super admin, so either annie or foodlover.
+ * @param {Request} req the request object
+ * @param {Response} res the response object
+ */
+app.get("/admin", requiresSuperUser, async (req, res) => {
+    const db = await Connection.open(mongoUri, myDBName);
+    const users = await db.collection(USERS).find({}).toArray();
+
+    res.render("admin.ejs", {
+        users: users,
+        currentPage: "admin"
+    });
+});
+
+/**
+ * Processes clicking of 'Toggle' button for any user.
+ * Updates user to be admin or student, depending on current state.
+ * Requires user to be a super user (annie or foodlover).
+ * @param {Request} req the request object
+ * @param {Response} res the response object
+ */
+app.post("/admin/toggle/:username", requiresSuperUser, async (req, res) => {
+    const db = await Connection.open(mongoUri, myDBName);
+    let username = req.params.username;
+    let user = await db.collection(USERS).findOne({username: username});
+
+    if (!user) {
+        req.flash('error', 'User not found');
+        return res.redirect('/admin');
+    }
+
+    const newRole = user.role === "admin" ? "student" : "admin";
+
+    await db.collection(USERS).updateOne(
+        { username },
+        { $set: { role: newRole } }
+    );
+
+    req.flash('info', `${username} is now ${newRole}`);
+    res.redirect('/admin');
+});
+
+/**
  * Flashes error message and redirects to login page if user not logged in
  * @param {Request} req the request object
  * @param {Response} res the response object
@@ -743,6 +787,30 @@ function requiresLogin(req, res, next) {
     } else {
         next();
   } 
+}
+
+/**
+ * Flashes error message and redirects to login page if user not super user
+ * (annie or foodlover).
+ * @param {Request} req the request object
+ * @param {Response} res the response object
+ * @param {Function} next the next function to call if user is logged in
+ */
+function requiresSuperUser(req, res, next) {
+    const allowedUsers = ["annie", "foodlover"]; 
+    console.log('HELLO')
+
+    if (!req.session.loggedIn) {
+        req.flash('error', 'Please log in.');
+        return res.redirect('/login');
+    }
+
+    if (!allowedUsers.includes(req.session.user.username)) {
+        req.flash('error', 'Access denied.');
+        return res.redirect('/');
+    }
+
+    next();
 }
 
 /**

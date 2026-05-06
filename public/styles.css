@@ -212,6 +212,13 @@ legend {
     font-size: 40px;
 }
 
+.admin-title {
+    font-size: 36px;
+    font-weight: 800;
+    color: #2b2b2b;
+    letter-spacing: -0.5px;
+}
+
 /* flashing */
 .alert {
     position: absolute;
