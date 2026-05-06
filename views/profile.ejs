@@ -61,7 +61,10 @@
                         <div class="card course-card shadow-sm mb-3">
                             <div class="card-body">
                                 <h3 class="card-title mb-1">
-                                    <%= r.department %> <%= r.course_num %>
+                                    <a href="/course/<%= r.department %>/<%= r.course_num %>"
+                                    class="text-decoration-none">
+                                        <%= r.department %> <%= r.course_num %>
+                                    </a>
                                 </h3>
                                 <p class="card-text small mb-1">
                                     <b>Hours per Week:</b> <%= r.hours %> |
