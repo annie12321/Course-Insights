@@ -196,6 +196,19 @@
     width: 100%;
 }
 
+.navbar-logo {
+    height: 1.8rem; 
+    width: auto;
+    object-fit: contain;
+    transform: scale(1.6);
+}
+
+.navbar-brand {
+    display: flex !important;
+    align-items: center;
+    gap: 15px; 
+}
+
 .logout {
     display: flex;
     align-items: center;
