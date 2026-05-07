@@ -634,17 +634,26 @@ app.get("/search/", requiresLogin, async (req, res) => {
     const db = await Connection.open(mongoUri, myDBName);
     const courses = db.collection(COURSES);
 
+    // make tag an array
     if (!tag) tag = [];
     else if (!Array.isArray(tag)) tag = [tag];
 
+    // map to the tags used in courses
     tag = tag.map(t => tagMap[t]);
     
+    // make query using tags
     let query = {};
     if (tag.length > 0) {
         query.tags = { $in: tag };
     }
+
+    // filter by search term
     var regex = new RegExp(term, "i");
+
+    // add to query
     query.searchTerm = regex;
+
+    // return results
     let results = await courses.find(query).toArray();
     return res.render("index.ejs", {results: results, currentPage: "home"});
 });
