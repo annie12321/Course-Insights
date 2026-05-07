@@ -23,6 +23,15 @@ const tagMap = {
     tests: { label: "No tests", class: "badge-secondary" }
 };
 
+const reverseTagMap = {
+    "Easy A": "easyA",
+    "Discussion-based": "discussion",
+    "Flipped classroom": "flipped",
+    "300-level": "300",
+    "Reading heavy": "reading",
+    "No tests": "tests"
+};
+
 function getColor(username) {
     const colors = [
         "#6c5b7b", "#c06c84", "#f67280",
@@ -73,7 +82,7 @@ function getColor(username) {
                         <b>Tags:</b>
                         <% if (course.tags && course.tags.length > 0) { %>
                             <% course.tags.forEach(tag => { %>
-                                <% const t = tagMap[tag]; %>
+                                <% const t = tagMap[reverseTagMap[tag]]; %>
                                 <% if (t) { %>
                                     <span class="badge badge-pill <%= t.class %> mr-1">
                                         <%= t.label %>
@@ -136,7 +145,7 @@ function getColor(username) {
                                 <p class="card-text small mb-1">
                                     <b>Would take again:</b> <%= r.retake ? "Yes" : "No" %>
                                 </p>
-                                <p class="card-text tag-size mb-2">
+                                <p class="card-text small tag-size mb-2">
                                     <b>Tags:</b>
                                     <% if (r.tags.length > 0) { %>
                                         <% r.tags.forEach(tag => { %>
