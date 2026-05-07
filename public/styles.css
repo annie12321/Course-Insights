@@ -12,6 +12,10 @@
     --bg-light: #f7f7f7;
 }
 
+body {
+    background: #fafafa;
+}
+
 /* layout containers */
 .container,
 #course-container,
@@ -338,7 +342,6 @@
     border-radius: 10px;
 }
 
-/* restore heading styling */
 .student-reviews {
     font-size: 20px;
     font-weight: 700;
@@ -357,4 +360,59 @@ legend {
 
 .badge-size {
     font-size: 15px;
+}
+
+/* index */
+.search-wrapper {
+    max-width: 750px;
+    margin: 0 auto;
+    margin-top: -20px;
+    margin-bottom: 30px;
+    padding: 28px;
+}
+
+.search-controls {
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+}
+
+.search-input,
+.tag-select,
+.search-btn {
+    height: 36px;
+    border-radius: 12px;
+    font-size: 15px;
+}
+
+.search-input,
+.tag-select {
+    border: 2px solid var(--border-light);
+    box-shadow: none;
+}
+
+.tags-label {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    font-weight: 600;
+    color: var(--darker-blue);
+    height: 36px;
+}
+
+.search-btn {
+    padding: 0 22px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} 
+
+.logo-index {
+    max-width: 260px;
+    margin-bottom: 10px;
+}
+
+#search-results-container {
+    max-width: 850px;
 }
