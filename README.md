@@ -1,8 +1,11 @@
 # Course Insights: your guide to course registration.
-By: Annie Chen and Emily Zhu.
 
 # Intro
-Course registration is one of the most important series of decisions in a college student’s school career. Choosing which courses to take can feel daunting, as they can define how the semester will go. Our project is a course insight web application designed to help students make more informed decisions about course selection. At its core, Course Insights is similar to Rate My Professor, but it goes much further. Course Insights is focused on the course experience itself, rather than solely on Professor ratings. It highlights course workload, structure, syllabus transparency, distribution requirements, and many more qualities that students care about in a course. From personal experience being students at Wellesley College, Annie and Emily chose to have Course Insights highlight the information they most wanted to see when deciding which courses to take. 
+Course registration is one of the most important series of decisions in a college student’s school career. Choosing which courses to take can feel daunting, as they can define how the semester will go. Our project is a course insight web application designed to help students make more informed decisions about course selection. At its core, Course Insights is similar to Rate My Professor, but it goes much further. Course Insights is focused on the course experience itself, rather than solely on Professor ratings. It highlights course workload, structure, syllabus transparency, distribution requirements, and many more qualities that students care about in a course. From personal experience being students at Wellesley College, Annie and Emily chose to have Course Insights highlight the information they most wanted to see when deciding which courses to take.
+
+# Info
+By: Annie Chen and Emily Zhu.
+Status: Beta.
 
 # Directions for Use
 You can create an account and login. Then you can type into the search bar any text (for example, try “CS 304”). You can also select any number of tags which further filter down your search. We haven’t manually put in many reviews yet, so there might not be any courses with a specific tag in the database yet. After you click “Search”, a list of hyperlinked courses will come up, if the search matches them. You can click on any course, and the course page will be loaded. 
