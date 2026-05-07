@@ -311,6 +311,10 @@ body {
     color: var(--dark-blue);
 }
 
+.bookmark-title {
+    font-size: 25px;
+}
+
 @keyframes slideIn {
     from {
         opacity: 0;
