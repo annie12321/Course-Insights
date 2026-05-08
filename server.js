@@ -435,7 +435,6 @@ app.get("/update/:reviewID", requiresLogin, async(req, res) => {
  */
 app.post("/update/:reviewID", requiresLogin, upload.single('syllabus'), async (req, res) => {    
     try {
-        console.log("BODY:", req.body); // debug purposes
         const db = await Connection.open(mongoUri, myDBName);
         let reviewId = new ObjectId(req.params.reviewID);
 
@@ -806,8 +805,7 @@ function requiresLogin(req, res, next) {
  * @param {Function} next the next function to call if user is logged in
  */
 function requiresSuperUser(req, res, next) {
-    const allowedUsers = ["annie", "foodlover"]; 
-    console.log('HELLO')
+    const allowedUsers = ["annie", "foodlover"];
 
     if (!req.session.loggedIn) {
         req.flash('error', 'Please log in.');
