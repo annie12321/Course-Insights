@@ -433,6 +433,7 @@ legend {
     font-weight: 600;
     color: var(--darker-blue);
     height: 36px;
+    gap: 12px;
 }
 
 .search-btn {
@@ -450,4 +451,8 @@ legend {
 
 #search-results-container {
     max-width: 850px;
+}
+
+.text-muted {
+    color: #6a7279 !important;
 }

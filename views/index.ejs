@@ -29,9 +29,8 @@
         <div id="search-container" class="search-wrapper">
             <form class="search" method="GET" action="/search/">
                 <div class="search-controls">
-                    <p class="tags-label mb-0">Search:</p>
 
-                    <label>
+                    <label class="tags-label mb-0 search-label">Search:
                         <input
                             type="text"
                             name="term"
@@ -40,9 +39,7 @@
                         >
                     </label>
 
-                    <p class="tags-label mb-0">Tags:</p>
-
-                    <label for="tags">
+                    <label for="tags" class="tags-label mb-0">Tags:
                         <select name="tag" id="tags" multiple size="1" class="form-control tag-select">
                             <option value="easyA">Easy A</option>
                             <option value="discussion">Discussion-based</option>

@@ -78,7 +78,7 @@ function getColor(username) {
                         <b>Retake Rate:</b>
                         <%= (course.retake != null) ? course.retake + "%" : "N/A" %>
                     </p>
-                    <p class="card-text small mb-2">
+                    <p class="card-text small tag-size mb-2">
                         <b>Tags:</b>
                         <% if (course.tags && course.tags.length > 0) { %>
                             <% course.tags.forEach(tag => { %>
@@ -90,7 +90,7 @@ function getColor(username) {
                                 <% } %>
                             <% }) %>
                         <% } else { %>
-                            <span class="text-muted small">No tags</span>
+                            <span class="text-muted small tag-size">No tags</span>
                         <% } %>
                     </p>
                      <% if (reviewID) { %>
