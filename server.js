@@ -504,6 +504,12 @@ app.post("/delete/:reviewID", requiresLogin, async (req, res) => {
     try {
         const db = await Connection.open(mongoUri, myDBName);
         let newReview = new ObjectId(req.params.reviewID);
+
+        if (req.session.user.username !== review.username && req.session.user.role !== "admin") {
+            req.flash('error', "You can only delete your own reviews.");
+            return res.redirect("/");
+        }
+
         // removes from courses
         db.collection(COURSES).updateMany(
             {reviews: newReview },
@@ -687,7 +693,7 @@ app.get("/bookmarks", requiresLogin, async (req, res) => {
  * @param {String} saved if the course needs to be saved
  * @returns a promise
  */
-async function boomark(department, course_num, saved, username) {
+async function bookmark(department, course_num, saved, username) {
     try {
         const db = await Connection.open(mongoUri, myDBName);
         const course = await db.collection(COURSES).findOne(
@@ -734,7 +740,7 @@ async function boomark(department, course_num, saved, username) {
  * @param {Response} res the response object
  */
 app.post('/saveAjax/:dept/:num/:act', requiresLogin, async (req,res) => {
-    const course = await boomark(req.params.dept, req.params.num, req.params.act, req.session.user.username);
+    const course = await bookmark(req.params.dept, req.params.num, req.params.act, req.session.user.username);
     return res.json({course: course, act: req.params.act});
 });
 
